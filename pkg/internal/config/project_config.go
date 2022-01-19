@@ -27,7 +27,7 @@ import (
 
 const (
 	projectFolderName = ".nitroci"
-	projectFileName = "nitroci.yml"
+	projectFileName   = "workspace.yml"
 )
 
 func FindProjectFiles() (files *[]string) {
