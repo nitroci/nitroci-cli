@@ -17,10 +17,12 @@ package cmd
 
 import (
 	"os"
+	"nitroci/pkg/internal/context"
 
 	"github.com/spf13/cobra"
 )
 
+var runtimeContext *context.RuntimeContext
 var FlagProfile string
 var FlagVerbose bool
 
@@ -39,6 +41,12 @@ and it is not tied to a particolar language or farmework.`,
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
+	runtimeContext = &context.RuntimeContext{
+		Cli : &context.CliContext{
+			Profile: FlagProfile,
+			Verbose: FlagVerbose,
+		},
+	}
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)

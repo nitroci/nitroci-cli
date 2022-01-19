@@ -20,6 +20,7 @@ type CliContext struct {
 	ConfigFile      string
 	PluginsHome 	string
 	Profile 		string
+	Verbose			bool
 	Environment 	string
 }
 
@@ -32,11 +33,11 @@ type WorkspaceContext struct {
 }
 
 type VirtualContext struct {
-	Workspaces []WorkspaceContext
+	Workspaces []*WorkspaceContext
 }
 
 type RuntimeContext struct {
-	Cli      CliContext
-	Virtual  VirtualContext
-	Workspace WorkspaceContext
+	Cli       *CliContext
+	Virtual   *VirtualContext
+	Workspace *WorkspaceContext
 }
