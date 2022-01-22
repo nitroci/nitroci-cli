@@ -1,4 +1,4 @@
-module nitroci
+module github.com/nitroci/nitroci-cli
 
 go 1.17
 

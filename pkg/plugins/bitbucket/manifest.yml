@@ -1,0 +1,18 @@
+id: 218d3caf07424b10a145ee5e1f036174
+name: bitbucket
+operations:
+    configure:
+        enabled: true
+        flags:
+            - name: user
+              shorthand: u
+              type: string
+              usage: username
+            - name: pass
+              shorthand: p
+              type: string
+              usage: password
+    environments:
+        enabled: true
+    pipelines:
+        enabled: true
