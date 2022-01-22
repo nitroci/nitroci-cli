@@ -53,17 +53,17 @@ func (v *VirtualContext) loadVirtualContext(workspaceDepth int) *VirtualContext 
 	}
 	for i, projFile := range *projFiles {
 		workspaceModel, _ := loadWorkspaceModel(projFile)
-		var wkfContext = WorkspaceContext{}
-		wkfContext.WorkspaceFile = projFile
-		wkfContext.WorkspaceFileHome = filepath.Dir(projFile)
-		wkfContext.WorkspaceHome = wkfContext.WorkspaceFileHome
-		if strings.HasSuffix(wkfContext.WorkspaceHome, config.ProjectFolderName) {
-			wkfContext.WorkspaceHome = filepath.Dir(wkfContext.WorkspaceHome)
+		var wksContext = WorkspaceContext{}
+		wksContext.WorkspaceFile = projFile
+		wksContext.WorkspaceFileHome = filepath.Dir(projFile)
+		wksContext.WorkspaceHome = wksContext.WorkspaceFileHome
+		if strings.HasSuffix(wksContext.WorkspaceHome, config.ProjectFolderName) {
+			wksContext.WorkspaceHome = filepath.Dir(wksContext.WorkspaceHome)
 		}
-		wkfContext.Version = workspaceModel.Version
-		wkfContext.Id = workspaceModel.Workspace.ID
-		wkfContext.Name = workspaceModel.Workspace.Name
-		v.Workspaces[i] = &wkfContext
+		wksContext.Version = workspaceModel.Version
+		wksContext.Id = workspaceModel.Workspace.ID
+		wksContext.Name = workspaceModel.Workspace.Name
+		v.Workspaces[i] = &wksContext
 	}
 	return v
 }
