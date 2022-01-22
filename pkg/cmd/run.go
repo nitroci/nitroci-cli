@@ -42,9 +42,9 @@ func runner(args *[]string) {
 		return
 	}
 	workspace, _ := runtimeContext.GetCurrentWorkspace()
-	workspaceDefinition, _ := workspace.LoadWorkspace()
+	workspaceModel, _ := workspace.LoadWorkspaceModel()
 	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspaceFile)
-	if len(workspaceDefinition.Commands) == 0 {
+	if len(workspaceModel.Commands) == 0 {
 		terminal.Print(&terminal.TerminalOutput{
 			Messages: []string{"On workspace", currentWorkspaceTxt},
 			Output:   "Workspace doesn't implement commands to be executed.",
@@ -52,8 +52,8 @@ func runner(args *[]string) {
 		return
 	}
 	if len(*args) != 1 || len((*args)[0]) == 0 {
-		commands := make([]string, len(workspaceDefinition.Commands))
-		for i, m := range workspaceDefinition.Commands {
+		commands := make([]string, len(workspaceModel.Commands))
+		for i, m := range workspaceModel.Commands {
 			commands[i] = strings.ToLower(m.Name) + ": " + strings.ToLower(m.Description)
 		}
 		tItems1 := terminal.TerminalItemsOutput{
@@ -68,7 +68,7 @@ func runner(args *[]string) {
 		})
 		return
 	}
-	for _, m := range workspaceDefinition.Commands {
+	for _, m := range workspaceModel.Commands {
 		if m.Name != (*args)[0] {
 			continue
 		}

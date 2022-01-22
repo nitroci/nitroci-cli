@@ -36,12 +36,12 @@ type VirtualContext struct {
 	Workspaces []*WorkspaceContext
 }
 
-func loadWorkspaceDefinition(projectFile string) (*config.WorkspaceConfiguration, error) {
+func loadWorkspaceModel(projectFile string) (*config.WorkspaceModel, error) {
 	return config.LoadProject(projectFile)
 }
 
-func (w *WorkspaceContext) LoadWorkspaceDefinition() (*config.WorkspaceConfiguration, error) {
-	return loadWorkspaceDefinition(w.WorkspaceFile)
+func (w *WorkspaceContext) LoadWorkspaceModel() (*config.WorkspaceModel, error) {
+	return loadWorkspaceModel(w.WorkspaceFile)
 }
 
 func (v *VirtualContext) loadVirtualContext(workspaceDepth int) *VirtualContext {
@@ -52,7 +52,7 @@ func (v *VirtualContext) loadVirtualContext(workspaceDepth int) *VirtualContext 
 		return v
 	}
 	for i, projFile := range *projFiles {
-		workspaceDefinition, _ := loadWorkspaceDefinition(projFile)
+		workspaceModel, _ := loadWorkspaceModel(projFile)
 		var wkfContext = WorkspaceContext{}
 		wkfContext.WorkspaceFile = projFile
 		wkfContext.WorkspaceFileHome = filepath.Dir(projFile)
@@ -60,9 +60,9 @@ func (v *VirtualContext) loadVirtualContext(workspaceDepth int) *VirtualContext 
 		if strings.HasSuffix(wkfContext.WorkspaceHome, config.ProjectFolderName) {
 			wkfContext.WorkspaceHome = filepath.Dir(wkfContext.WorkspaceHome)
 		}
-		wkfContext.Version = workspaceDefinition.Version
-		wkfContext.Id = workspaceDefinition.Workspace.ID
-		wkfContext.Name = workspaceDefinition.Workspace.Name
+		wkfContext.Version = workspaceModel.Version
+		wkfContext.Id = workspaceModel.Workspace.ID
+		wkfContext.Name = workspaceModel.Workspace.Name
 		v.Workspaces[i] = &wkfContext
 	}
 	return v

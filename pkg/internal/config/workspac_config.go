@@ -47,8 +47,8 @@ func FindCurrentProjectFile(depth int) (file string) {
 	return (*projectFiles)[depth]
 }
 
-func LoadProject(path string) (*WorkspaceConfiguration, error) {
-	var config = &WorkspaceConfiguration{}
+func LoadProject(path string) (*WorkspaceModel, error) {
+	var config = &WorkspaceModel{}
 	yamlFile, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -60,7 +60,7 @@ func LoadProject(path string) (*WorkspaceConfiguration, error) {
 	return config, nil
 }
 
-func (config *WorkspaceConfiguration) SaveProject(path string) *WorkspaceConfiguration {
+func (config *WorkspaceModel) SaveProject(path string) *WorkspaceModel {
 	uuidWithHyphen := uuid.New()
 	uuid := strings.Replace(uuidWithHyphen.String(), "-", "", -1)
 	config.Workspace.ID = uuid

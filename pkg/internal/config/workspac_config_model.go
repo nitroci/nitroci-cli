@@ -15,7 +15,7 @@ limitations under the License.
 */
 package config
 
-type WorkspaceConfiguration struct {
+type WorkspaceModel struct {
 	Version      int            `yaml:"version"`
 	Workspace    Workspace      `yaml:"workspace,omitempty"`
 	Environments []Environments `yaml:"environments,omitempty"`
