@@ -21,7 +21,7 @@ import (
 	"path/filepath"
 )
 
-func inverseRecursiveFindFiles(rootPath string, targetPath string, folderName string, fileName string, files *[]string) {
+func inverseRecursiveFindFilesInPaths(rootPath string, targetPath string, folderName string, fileName string, files []string) {
 	rel, _ := filepath.Rel(rootPath, targetPath)
 	if rel == "." {
 		return
@@ -30,21 +30,21 @@ func inverseRecursiveFindFiles(rootPath string, targetPath string, folderName st
 	filePath := fmt.Sprintf("%v/%v", searchPath, fileName)
 	_, err := os.Stat(filePath)
 	if err == nil || os.IsExist(err) {
-		*files = append(*files, fmt.Sprintf("%v%v/%v/%v", rootPath, rel, folderName, fileName))
+		files = append(files, fmt.Sprintf("%v%v/%v/%v", rootPath, rel, folderName, fileName))
 	} else {
 		filePath := fmt.Sprintf("%v/%v", targetPath, fileName)
 		_, err := os.Stat(filePath)
 		if err == nil || os.IsExist(err) {
-			*files = append(*files, fmt.Sprintf("%v%v/%v", rootPath, rel, fileName))
+			files = append(files, fmt.Sprintf("%v%v/%v", rootPath, rel, fileName))
 		}
 	}
 	targetPath += "/.."
-	inverseRecursiveFindFiles(rootPath, targetPath, folderName, fileName, files)
+	inverseRecursiveFindFilesInPaths(rootPath, targetPath, folderName, fileName, files)
 }
 
-func InverseRecursiveFindFiles(targetPath string, folderName string, fileName string) (files *[]string) {
+func inverseRecursiveFindFiles(targetPath string, folderName string, fileName string) (files []string) {
 	basePath := "/"
 	paths := []string{}
-	inverseRecursiveFindFiles(basePath, targetPath, folderName, fileName, &paths)
-	return &paths
+	inverseRecursiveFindFilesInPaths(basePath, targetPath, folderName, fileName, paths)
+	return paths
 }

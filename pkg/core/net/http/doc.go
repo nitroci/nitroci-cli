@@ -13,14 +13,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package common
-
-import (
-	"encoding/json"
-)
-
-func IsJSON(str string) (bool, error) {
-	var js json.RawMessage
-	err := json.Unmarshal([]byte(str), &js)
-	return err != nil, err
-}
+package http

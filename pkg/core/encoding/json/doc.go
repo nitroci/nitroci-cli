@@ -13,21 +13,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package context
-
-type CliContext struct {
-	ConfigHome  	string
-	ConfigFile  	string
-	CacheHome   	string
-	Profile     	string
-	Verbose     	bool
-	WorkspaceDepth 	int
-	Environment		string
-}
-
-func (c *CliContext) loadCliContext(profile string, verbose bool, workspaceDepth int) *CliContext {
-	c.Profile = profile
-	c.Verbose = verbose
-	c.WorkspaceDepth = workspaceDepth
-	return c
-}
+package json

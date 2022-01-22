@@ -17,12 +17,12 @@ package cmd
 
 import (
 	"os"
-	"nitroci/pkg/core/context"
+	"nitroci/pkg/core/contexts"
 
 	"github.com/spf13/cobra"
 )
 
-var runtimeContext *context.RuntimeContext
+var runtimeContext *contexts.RuntimeContext
 
 var rootCmd = &cobra.Command{
 	Use:   "nitroci",
@@ -42,7 +42,7 @@ func Execute() {
 	profile, _ := rootCmd.PersistentFlags().GetString("profile")
 	verbose, _ := rootCmd.PersistentFlags().GetBool("verbose")
 	workspaceDepth, _ := rootCmd.PersistentFlags().GetInt("workspace")
-	runtimeContext = context.LoadRuntimeContext(profile, verbose, workspaceDepth)
+	runtimeContext = contexts.LoadRuntimeContext(profile, verbose, workspaceDepth)
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)

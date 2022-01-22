@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package common
+package http
 
 import (
 	"encoding/base64"
@@ -21,6 +21,8 @@ import (
 	"io"
 	"net/http"
 	"strings"
+
+	extendedJson "nitroci/pkg/core/encoding/json"
 )
 
 func basicAuth(username, password string) string {
@@ -39,7 +41,7 @@ type HttpResult struct {
 }
 
 func (httpResult HttpResult) ToJson(target interface{}) error {
-	_, err := IsJSON(*httpResult.Body)
+	_, err := extendedJson.IsJSON(*httpResult.Body)
 	if err != nil {
 		return err
 	}

@@ -13,51 +13,52 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package context
+package contexts
 
 import (
 	"errors"
 	"path/filepath"
 	"strings"
 
+	"nitroci/pkg/core/workspaces"
 	"nitroci/pkg/internal/config"
 )
 
 type WorkspaceContext struct {
-	WorkspaceFileHome string
-	WorkspaceFile     string
-	WorkspaceHome     string
-	Version           int
-	Id                string
-	Name              string
+	WorkspaceFileFolder string
+	WorkspaceFileName   string
+	WorkspaceHome       string
+	Version             int
+	Id                  string
+	Name                string
 }
 
 type VirtualContext struct {
 	Workspaces []*WorkspaceContext
 }
 
-func loadWorkspaceModel(projectFile string) (*config.WorkspaceModel, error) {
-	return config.LoadProject(projectFile)
+func loadWorkspaceFile(projectFile string) (*workspaces.WorkspaceModel, error) {
+	return config.LoadWorkspaceFile(projectFile)
 }
 
-func (w *WorkspaceContext) LoadWorkspaceModel() (*config.WorkspaceModel, error) {
-	return loadWorkspaceModel(w.WorkspaceFile)
+func (w *WorkspaceContext) LoadWorkspaceFile() (*workspaces.WorkspaceModel, error) {
+	return loadWorkspaceFile(w.WorkspaceFileName)
 }
 
 func (v *VirtualContext) loadVirtualContext(workspaceDepth int) *VirtualContext {
-	projFiles := config.FindProjectFiles()
-	projFilesCount := len(*projFiles)
+	projFiles := config.FindWorkspaceFiles()
+	projFilesCount := len(projFiles)
 	v.Workspaces = make([]*WorkspaceContext, projFilesCount)
 	if projFilesCount == 0 {
 		return v
 	}
-	for i, projFile := range *projFiles {
-		workspaceModel, _ := loadWorkspaceModel(projFile)
+	for i, projFile := range projFiles {
+		workspaceModel, _ := loadWorkspaceFile(projFile)
 		var wksContext = WorkspaceContext{}
-		wksContext.WorkspaceFile = projFile
-		wksContext.WorkspaceFileHome = filepath.Dir(projFile)
-		wksContext.WorkspaceHome = wksContext.WorkspaceFileHome
-		if strings.HasSuffix(wksContext.WorkspaceHome, config.ProjectFolderName) {
+		wksContext.WorkspaceFileName = projFile
+		wksContext.WorkspaceFileFolder = filepath.Dir(projFile)
+		wksContext.WorkspaceHome = wksContext.WorkspaceFileFolder
+		if strings.HasSuffix(wksContext.WorkspaceHome, wksContext.WorkspaceFileFolder) {
 			wksContext.WorkspaceHome = filepath.Dir(wksContext.WorkspaceHome)
 		}
 		wksContext.Version = workspaceModel.Version

@@ -17,8 +17,8 @@ package cmd
 
 import (
 	"fmt"
+	"nitroci/pkg/core/io/terminal"
 	"nitroci/pkg/internal/config"
-	"nitroci/pkg/internal/io/terminal"
 
 	"github.com/spf13/cobra"
 )
@@ -34,7 +34,7 @@ var rootConfigureCmd = &cobra.Command{
 
 func configureRootRunner() {
 	config.EnsureConfiguration()
-	globalConfig := config.FindGlobalconfig()
+	globalConfig := config.FindGlobalConfig()
 	if FlagConfigureRaw == true {
 		if len(globalConfig) > 0 {
 			fmt.Println(globalConfig)

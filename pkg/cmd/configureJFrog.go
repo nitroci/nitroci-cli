@@ -16,11 +16,12 @@ limitations under the License.
 package cmd
 
 import (
-	"nitroci/pkg/internal/common"
+	"nitroci/pkg/core/io/terminal"
 	"nitroci/pkg/internal/config"
-	"nitroci/pkg/internal/io/terminal"
 	"os"
 	"strings"
+
+	"nitroci/pkg/core/net/http"
 
 	"github.com/spf13/cobra"
 )
@@ -52,7 +53,7 @@ func configureJFrogRunner() {
 	if len(password) == 0 {
 		_, password = config.PromptGlobalConfigKey(runtimeContext.Cli.Profile, "Password", true)
 	}
-	httpResult, err := common.HttpGet("https://"+domain+".jfrog.io/"+domain+"/api/npm/auth", username, password)
+	httpResult, err := http.HttpGet("https://"+domain+".jfrog.io/"+domain+"/api/npm/auth", username, password)
 	if err != nil || httpResult.StatusCode != 200 {
 		errMessage := "Operation cannot be completed. Please verify the inputs."
 		terminal.Print(&terminal.TerminalOutput{

@@ -24,20 +24,20 @@ import (
 	"github.com/spf13/viper"
 )
 
-func globalConfig() string {
-	nitrociConfg := os.Getenv("NITROCICONFIG")
+func globalConfigPath() string {
+	nitrociConfg := os.Getenv("NITROCI_CONFIG")
 	if len(nitrociConfg) == 0 {
 		nitrociConfg = "$HOME/.nitroci/config"
 	}
 	return nitrociConfg
 }
 
-func FindGlobalconfig() (file string) {
-	return globalConfig() + ".ini"
+func FindGlobalConfig() (configPath string) {
+	return globalConfigPath() + ".ini"
 }
 
-func EnsureConfiguration() {
-	nitrociConfg := globalConfig()
+func EnsureConfiguration() error {
+	nitrociConfg := globalConfigPath()
 	configHome := filepath.Dir(nitrociConfg)
 	configName := filepath.Base(nitrociConfg)
 	configType := "ini"
@@ -51,14 +51,15 @@ func EnsureConfiguration() {
 	_, err := os.Stat(configPath)
 	if !os.IsExist(err) {
 		if err := viper.SafeWriteConfig(); err != nil {
+			return err
 		}
 	}
 	viper.AutomaticEnv()
 	err = viper.ReadInConfig()
 	if err != nil {
-		fmt.Println("fatal error config file: default \n", err)
-		os.Exit(1)
+		return err
 	}
+	return nil
 }
 
 func GetGlobalConfigString(profile string, key string) string {

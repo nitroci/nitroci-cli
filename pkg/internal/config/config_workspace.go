@@ -21,50 +21,51 @@ import (
 	"os"
 	"strings"
 
+	"nitroci/pkg/core/workspaces"
+
 	"github.com/google/uuid"
 	"gopkg.in/yaml.v2"
 )
 
 const (
-	ProjectFolderName = ".nitroci"
-	ProjectFileName   = "workspace.yml"
+	WorkspaceFileFolder = ".nitroci"
+	WorkspaceFileName   = "workspace.yml"
 )
 
-func FindProjectFiles() (files *[]string) {
+func FindWorkspaceFiles() (workspaceFiles []string) {
 	targetPath, err := os.Getwd()
 	if err != nil {
 		panic(err)
 	}
-	return InverseRecursiveFindFiles(targetPath, ProjectFolderName, ProjectFileName)
+	return inverseRecursiveFindFiles(targetPath, WorkspaceFileFolder, WorkspaceFileName)
 }
 
-func FindCurrentProjectFile(depth int) (file string) {
-	projectFiles := FindProjectFiles()
-	if len(*projectFiles) == 0 || len(*projectFiles) <= depth {
+func FindCurrentWorkspaceFile(workspaceDepth int) (file string) {
+	workspaceFiles := FindWorkspaceFiles()
+	if len(workspaceFiles) == 0 || len(workspaceFiles) <= workspaceDepth {
 		empty := ""
 		return empty
 	}
-	return (*projectFiles)[depth]
+	return (workspaceFiles)[workspaceDepth]
 }
 
-func LoadProject(path string) (*WorkspaceModel, error) {
-	var config = &WorkspaceModel{}
-	yamlFile, err := ioutil.ReadFile(path)
+func LoadWorkspaceFile(workspaceFile string) (*workspaces.WorkspaceModel, error) {
+	var workspaceModel = &workspaces.WorkspaceModel{}
+	yamlFile, err := ioutil.ReadFile(workspaceFile)
 	if err != nil {
 		return nil, err
 	}
-	err = yaml.Unmarshal(yamlFile, config)
+	err = yaml.Unmarshal(yamlFile, workspaceModel)
 	if err != nil {
 		return nil, err
 	}
-	return config, nil
+	return workspaceModel, nil
 }
 
-func (config *WorkspaceModel) SaveProject(path string) *WorkspaceModel {
+func SaveWorkspaceFile(workspaceModel *workspaces.WorkspaceModel, workspaceFile string) {
 	uuidWithHyphen := uuid.New()
 	uuid := strings.Replace(uuidWithHyphen.String(), "-", "", -1)
-	config.Workspace.ID = uuid
-	yamlData, _ := yaml.Marshal(&config)
+	workspaceModel.Workspace.ID = uuid
+	yamlData, _ := yaml.Marshal(&workspaceModel)
 	fmt.Println(string(yamlData))
-	return config
 }

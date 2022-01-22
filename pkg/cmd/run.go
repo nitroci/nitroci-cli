@@ -19,7 +19,7 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"nitroci/pkg/internal/io/terminal"
+	"nitroci/pkg/core/io/terminal"
 	"os"
 	"os/exec"
 	"strings"
@@ -32,18 +32,18 @@ var runCmd = &cobra.Command{
 	Short: "Run a workspace command",
 	Long:  `Run a workspace command`,
 	Run: func(cmd *cobra.Command, args []string) {
-		runner(&args)
+		runner(args)
 	},
 }
 
-func runner(args *[]string) {
+func runner(args []string) {
 	if !runtimeContext.HasWorkspaces() {
 		workspaceRootRunner()
 		return
 	}
 	workspace, _ := runtimeContext.GetCurrentWorkspace()
-	workspaceModel, _ := workspace.LoadWorkspaceModel()
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspaceFile)
+	workspaceModel, _ := workspace.LoadWorkspaceFile()
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspaceFileName)
 	if len(workspaceModel.Commands) == 0 {
 		terminal.Print(&terminal.TerminalOutput{
 			Messages: []string{"On workspace", currentWorkspaceTxt},
@@ -51,7 +51,7 @@ func runner(args *[]string) {
 		})
 		return
 	}
-	if len(*args) != 1 || len((*args)[0]) == 0 {
+	if len(args) != 1 || len((args)[0]) == 0 {
 		commands := make([]string, len(workspaceModel.Commands))
 		for i, m := range workspaceModel.Commands {
 			commands[i] = strings.ToLower(m.Name) + ": " + strings.ToLower(m.Description)
@@ -69,7 +69,7 @@ func runner(args *[]string) {
 		return
 	}
 	for _, m := range workspaceModel.Commands {
-		if m.Name != (*args)[0] {
+		if m.Name != (args)[0] {
 			continue
 		}
 		for i, step := range m.Steps {
