@@ -16,13 +16,13 @@ limitations under the License.
 package contexts
 
 type CliContext struct {
-	ConfigHome  	string
-	ConfigFile  	string
-	CacheHome   	string
-	Profile     	string
-	Verbose     	bool
-	WorkspaceDepth 	int
-	Environment		string
+	ConfigHome     string
+	ConfigFile     string
+	CacheHome      string
+	Profile        string
+	Verbose        bool
+	WorkspaceDepth int
+	Environment    string
 }
 
 func (c *CliContext) loadCliContext(profile string, verbose bool, workspaceDepth int) *CliContext {

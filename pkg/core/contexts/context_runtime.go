@@ -16,13 +16,13 @@ limitations under the License.
 package contexts
 
 type RuntimeContext struct {
-	Cli       *CliContext
-	Virtual   *VirtualContext
+	Cli     *CliContext
+	Virtual *VirtualContext
 }
 
 func LoadRuntimeContext(profile string, verbose bool, workspaceDepth int) *RuntimeContext {
 	var ctx = &RuntimeContext{
-		Cli: &CliContext{},
+		Cli:     &CliContext{},
 		Virtual: &VirtualContext{},
 	}
 	ctx.Cli.loadCliContext(profile, verbose, workspaceDepth)
@@ -34,7 +34,7 @@ func (r *RuntimeContext) HasWorkspaces() bool {
 	return r.Virtual.hasWorkspaces()
 }
 
-func (r *RuntimeContext)GetWorkspaces() ([]*WorkspaceContext, error) {
+func (r *RuntimeContext) GetWorkspaces() ([]*WorkspaceContext, error) {
 	return r.Virtual.getWorkspaces()
 }
 

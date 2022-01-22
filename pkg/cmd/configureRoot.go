@@ -35,7 +35,7 @@ var rootConfigureCmd = &cobra.Command{
 func configureRootRunner() {
 	config.EnsureConfiguration()
 	globalConfig := config.FindGlobalConfig()
-	if FlagConfigureRaw == true {
+	if FlagConfigureRaw {
 		if len(globalConfig) > 0 {
 			fmt.Println(globalConfig)
 		}
