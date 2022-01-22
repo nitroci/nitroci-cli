@@ -17,8 +17,9 @@ package cmd
 
 import (
 	"fmt"
-	"nitroci/pkg/core/io/terminal"
-	"nitroci/pkg/internal/config"
+
+	"github.com/nitroci/nitroci-cli/pkg/core/io/terminal"
+	"github.com/nitroci/nitroci-cli/pkg/internal/config"
 
 	"github.com/spf13/cobra"
 )

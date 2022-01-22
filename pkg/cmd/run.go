@@ -19,10 +19,11 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"nitroci/pkg/core/io/terminal"
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/nitroci/nitroci-cli/pkg/core/io/terminal"
 
 	"github.com/spf13/cobra"
 )

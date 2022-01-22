@@ -16,8 +16,9 @@ limitations under the License.
 package cmd
 
 import (
-	"nitroci/pkg/core/contexts"
 	"os"
+
+	"github.com/nitroci/nitroci-cli/pkg/core/contexts"
 
 	"github.com/spf13/cobra"
 )

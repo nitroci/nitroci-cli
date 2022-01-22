@@ -21,7 +21,7 @@ import (
 	"os"
 	"strings"
 
-	"nitroci/pkg/core/workspaces"
+	"github.com/nitroci/nitroci-cli/pkg/core/workspaces"
 
 	"github.com/google/uuid"
 	"gopkg.in/yaml.v2"

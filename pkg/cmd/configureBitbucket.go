@@ -16,7 +16,7 @@ limitations under the License.
 package cmd
 
 import (
-	"nitroci/pkg/internal/config"
+	"github.com/nitroci/nitroci-cli/pkg/internal/config"
 
 	"github.com/spf13/cobra"
 )

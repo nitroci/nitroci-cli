@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "nitroci/pkg/cmd"
+import "github.com/nitroci/nitroci-cli/pkg/cmd"
 
 func main() {
 	cmd.Execute()

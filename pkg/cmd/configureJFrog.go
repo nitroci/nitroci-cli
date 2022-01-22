@@ -16,12 +16,13 @@ limitations under the License.
 package cmd
 
 import (
-	"nitroci/pkg/core/io/terminal"
-	"nitroci/pkg/internal/config"
 	"os"
 	"strings"
 
-	"nitroci/pkg/core/net/http"
+	"github.com/nitroci/nitroci-cli/pkg/core/io/terminal"
+	"github.com/nitroci/nitroci-cli/pkg/internal/config"
+
+	"github.com/nitroci/nitroci-cli/pkg/core/net/http"
 
 	"github.com/spf13/cobra"
 )

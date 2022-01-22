@@ -22,7 +22,7 @@ import (
 	"net/http"
 	"strings"
 
-	extendedJson "nitroci/pkg/core/encoding/json"
+	extendedJson "github.com/nitroci/nitroci-cli/pkg/core/encoding/json"
 )
 
 func basicAuth(username, password string) string {

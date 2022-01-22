@@ -20,8 +20,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"nitroci/pkg/core/workspaces"
-	"nitroci/pkg/internal/config"
+	"github.com/nitroci/nitroci-cli/pkg/core/workspaces"
+	"github.com/nitroci/nitroci-cli/pkg/internal/config"
 )
 
 type WorkspaceContext struct {
