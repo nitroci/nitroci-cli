@@ -19,7 +19,6 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"nitroci/pkg/internal/config"
 	"nitroci/pkg/internal/io/terminal"
 	"os"
 	"os/exec"
@@ -27,8 +26,6 @@ import (
 
 	"github.com/spf13/cobra"
 )
-
-var FlagRunWorkspaceDepth int
 
 var runCmd = &cobra.Command{
 	Use:   "run",
@@ -40,15 +37,14 @@ var runCmd = &cobra.Command{
 }
 
 func runner(args *[]string) {
-	projectFile := config.FindCurrentProjectFile(FlagRunWorkspaceDepth)
-	if len(*projectFile) == 0 {
+	if !runtimeContext.HasWorkspaces() {
 		workspaceRootRunner()
 		return
 	}
-	var config config.ProjectConfiguration
-	config.LoadProject(projectFile)
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", *projectFile)
-	if len(config.Commands) == 0 {
+	workspace, _ := runtimeContext.GetCurrentWorkspace()
+	workspaceDefinition, _ := workspace.LoadWorkspace()
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspaceFile)
+	if len(workspaceDefinition.Commands) == 0 {
 		terminal.Print(&terminal.TerminalOutput{
 			Messages: []string{"On workspace", currentWorkspaceTxt},
 			Output:   "Workspace doesn't implement commands to be executed.",
@@ -56,8 +52,8 @@ func runner(args *[]string) {
 		return
 	}
 	if len(*args) != 1 || len((*args)[0]) == 0 {
-		commands := make([]string, len(config.Commands))
-		for i, m := range config.Commands {
+		commands := make([]string, len(workspaceDefinition.Commands))
+		for i, m := range workspaceDefinition.Commands {
 			commands[i] = strings.ToLower(m.Name) + ": " + strings.ToLower(m.Description)
 		}
 		tItems1 := terminal.TerminalItemsOutput{
@@ -72,7 +68,7 @@ func runner(args *[]string) {
 		})
 		return
 	}
-	for _, m := range config.Commands {
+	for _, m := range workspaceDefinition.Commands {
 		if m.Name != (*args)[0] {
 			continue
 		}
@@ -80,7 +76,8 @@ func runner(args *[]string) {
 			cwd := step.Cwd
 			for j, script := range step.Scripts {
 				step := ""
-				if FlagVerbose {
+				isVerbose := runtimeContext.Cli.Verbose
+				if isVerbose {
 					step = fmt.Sprintf("[Step %v of %v][%v]", i+1, len(m.Steps), j+1)
 				}
 				tAction := &terminal.TerminalActionOutput{
@@ -120,5 +117,4 @@ func runner(args *[]string) {
 
 func init() {
 	rootCmd.AddCommand(runCmd)
-	runCmd.PersistentFlags().IntVarP(&FlagRunWorkspaceDepth, "workspace", "w", 0, "set current workspace")
 }

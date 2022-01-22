@@ -17,7 +17,6 @@ package cmd
 
 import (
 	"fmt"
-	"nitroci/pkg/internal/config"
 	"nitroci/pkg/internal/io/terminal"
 
 	"github.com/spf13/cobra"
@@ -33,14 +32,14 @@ var rootWorkspaceCmd = &cobra.Command{
 }
 
 func workspaceRootRunner() {
-	projectFiles := config.FindProjectFiles()
-	if FlagWorkspaceRaw == true {
-		if len(*projectFiles) > 0 {
-			fmt.Println((*projectFiles)[0])
+	if FlagWorkspaceRaw {
+		if runtimeContext.HasWorkspaces() {
+			workspace, _ := runtimeContext.GetWorkspace(0)
+			fmt.Println(workspace.WorkspaceFile)
 		}
 		return
 	}
-	if len(*projectFiles) == 0 {
+	if !runtimeContext.HasWorkspaces() {
 		terminal.Print(&terminal.TerminalOutput{
 			Messages:    []string{"Workspace is not initialized"},
 			MessageType: terminal.Error,
@@ -48,8 +47,9 @@ func workspaceRootRunner() {
 		})
 	} else {
 		files := []string{}
-		for i, m := range *projectFiles {
-			files = append(files, fmt.Sprintf("%v %v", i+1, m))
+		workspaces, _ := runtimeContext.GetWorkspaces()
+		for i, w := range workspaces {
+			files = append(files, fmt.Sprintf("%v %v", i+1, w.WorkspaceFile))
 		}
 		tItems := terminal.TerminalItemsOutput{
 			Messages:    []string{"Intialized workspaces:"},
@@ -57,7 +57,8 @@ func workspaceRootRunner() {
 			ItemsType:   terminal.Info,
 			Items:       files,
 		}
-		currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", (*projectFiles)[0])
+		workspace, _ := runtimeContext.GetWorkspace(0)
+		currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspaceFile)
 		terminal.Print(&terminal.TerminalOutput{
 			Messages:    []string{"Workspace has been initialized", currentWorkspaceTxt},
 			ItemsOutput: []terminal.TerminalItemsOutput{tItems},

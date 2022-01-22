@@ -17,14 +17,12 @@ package cmd
 
 import (
 	"os"
-	"nitroci/pkg/internal/context"
+	"nitroci/pkg/core/context"
 
 	"github.com/spf13/cobra"
 )
 
 var runtimeContext *context.RuntimeContext
-var FlagProfile string
-var FlagVerbose bool
 
 var rootCmd = &cobra.Command{
 	Use:   "nitroci",
@@ -41,12 +39,10 @@ and it is not tied to a particolar language or farmework.`,
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	runtimeContext = &context.RuntimeContext{
-		Cli : &context.CliContext{
-			Profile: FlagProfile,
-			Verbose: FlagVerbose,
-		},
-	}
+	profile, _ := rootCmd.PersistentFlags().GetString("profile")
+	verbose, _ := rootCmd.PersistentFlags().GetBool("verbose")
+	workspaceDepth, _ := rootCmd.PersistentFlags().GetInt("workspace")
+	runtimeContext = context.LoadRuntimeContext(profile, verbose, workspaceDepth)
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
@@ -54,6 +50,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&FlagProfile, "profile", "p", "default", "set a specific profile")
-	rootCmd.PersistentFlags().BoolVarP(&FlagVerbose, "verbose", "v", false, "displays verbose output")
+	rootCmd.PersistentFlags().StringP("profile", "p", "default", "set a specific profile")
+	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "displays verbose output")
+	rootCmd.PersistentFlags().IntP("workspace", "w", 0, "set current workspace")
 }

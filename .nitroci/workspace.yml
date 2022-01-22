@@ -6,16 +6,12 @@ commands:
   - name: build
     description: Build the command line.
     steps:
-      - cwd: ./repos
+      - cwd: .
         scripts: 
-          - go build . && cp ./nitroci ~/.apps/bin/nitroci
+          - go build -o ./dist . && cp ./dist/nitroci ~/.apps/bin/nitroci
   - name: test
     description: Build the command line.
     steps:
       - scripts: 
           - for i in {1..5}; do sleep 1 && echo $i; done
           - ls
-  - name: destroy
-    description: Destroy the environment
-    steps:
-      - script: pyenv uninstall -f rv-overx-sicurezza-3.9.6-database

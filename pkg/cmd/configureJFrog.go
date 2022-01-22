@@ -41,16 +41,16 @@ var jfrogConfigureCmd = &cobra.Command{
 func configureJFrogRunner() {
 	domain := FlagJFrogDomain
 	if len(domain) == 0 {
-		_, domain = config.PromptGlobalConfigKey(FlagProfile, "Domain", false)
+		_, domain = config.PromptGlobalConfigKey(runtimeContext.Cli.Profile, "Domain", false)
 	}
 	username := FlagJFrogUsername
 	if len(username) == 0 {
-		_, username = config.PromptGlobalConfigKey(FlagProfile, "Username", false)
+		_, username = config.PromptGlobalConfigKey(runtimeContext.Cli.Profile, "Username", false)
 
 	}
 	password := FlagJFrogPassword
 	if len(password) == 0 {
-		_, password = config.PromptGlobalConfigKey(FlagProfile, "Password", true)
+		_, password = config.PromptGlobalConfigKey(runtimeContext.Cli.Profile, "Password", true)
 	}
 	httpResult, err := common.HttpGet("https://"+domain+".jfrog.io/"+domain+"/api/npm/auth", username, password)
 	if err != nil || httpResult.StatusCode != 200 {
@@ -64,9 +64,9 @@ func configureJFrogRunner() {
 	for _, line := range strings.Split(strings.TrimSuffix(*httpResult.Body, "\n"), "\n") {
 		s := strings.Split(line, " = ")
 		if s[0] == "_auth" {
-			config.SetGlobalConfigString(FlagProfile, "jfrog_secret", s[1])
+			config.SetGlobalConfigString(runtimeContext.Cli.Profile, "jfrog_secret", s[1])
 		} else if s[0] == "email" {
-			config.SetGlobalConfigString(FlagProfile, "jfrog_username", s[1])
+			config.SetGlobalConfigString(runtimeContext.Cli.Profile, "jfrog_username", s[1])
 		}
 	}
 }
