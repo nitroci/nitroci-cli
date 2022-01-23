@@ -19,8 +19,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var FlagConfigureRaw bool
-
 var configureCmd = &cobra.Command{
 	Use:   "configure",
 	Short: "Configurations management",
@@ -38,5 +36,6 @@ func init() {
 	rootCmd.AddCommand(configureCmd)
 	configureCmd.AddCommand(bitbucketConfigureCmd)
 	configureCmd.AddCommand(jfrogConfigureCmd)
-	configureCmd.Flags().BoolVarP(&FlagConfigureRaw, "raw", "r", false, "get a raw result")
+	configureCmd.Flags().BoolP("show", "r", false, "show configurations")
+	configureCmd.Flags().BoolP("raw", "r", false, "output raw configurations")
 }

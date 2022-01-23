@@ -12,7 +12,7 @@
             "mode": "auto",
             "program": "./main.go",
             "args": [
-                "workspace", "-v"
+                "workspace", "--profile", "nitro", "-v"
             ]
         }
     ]

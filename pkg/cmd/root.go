@@ -52,6 +52,6 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().StringP("profile", "p", "default", "set a specific profile")
-	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "displays verbose output")
 	rootCmd.PersistentFlags().IntP("workspace", "w", 0, "set current workspace")
+	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "output verbose output")
 }
