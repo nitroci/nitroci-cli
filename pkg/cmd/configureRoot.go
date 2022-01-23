@@ -16,10 +16,10 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
+	//"fmt"
 
-	"github.com/nitroci/nitroci-cli/pkg/core/io/terminal"
-	"github.com/nitroci/nitroci-cli/pkg/internal/config"
+	//"github.com/nitroci/nitroci-core/pkg/core/io/terminal"
+	//"github.com/nitroci/nitroci-core/pkg/internal/config"
 
 	"github.com/spf13/cobra"
 )
@@ -34,6 +34,7 @@ var rootConfigureCmd = &cobra.Command{
 }
 
 func configureRootRunner() {
+	/*
 	config.EnsureConfiguration()
 	globalConfig := config.FindGlobalConfig()
 	if FlagConfigureRaw {
@@ -60,6 +61,7 @@ func configureRootRunner() {
 			ItemsOutput: []terminal.TerminalItemsOutput{tItems},
 		})
 	}
+	*/
 }
 
 func init() {

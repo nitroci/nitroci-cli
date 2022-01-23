@@ -16,13 +16,13 @@ limitations under the License.
 package cmd
 
 import (
-	"os"
-	"strings"
+	//"os"
+	//"strings"
 
-	"github.com/nitroci/nitroci-cli/pkg/core/io/terminal"
-	"github.com/nitroci/nitroci-cli/pkg/internal/config"
+	//"github.com/nitroci/nitroci-core/pkg/core/io/terminal"
+	//"github.com/nitroci/nitroci-core/pkg/internal/config"
 
-	"github.com/nitroci/nitroci-cli/pkg/core/net/http"
+	//"github.com/nitroci/nitroci-core/pkg/core/net/http"
 
 	"github.com/spf13/cobra"
 )
@@ -41,6 +41,7 @@ var jfrogConfigureCmd = &cobra.Command{
 }
 
 func configureJFrogRunner() {
+	/*
 	domain := FlagJFrogDomain
 	if len(domain) == 0 {
 		_, domain = config.PromptGlobalConfigKey(runtimeContext.Cli.Profile, "Domain", false)
@@ -71,6 +72,7 @@ func configureJFrogRunner() {
 			config.SetGlobalConfigString(runtimeContext.Cli.Profile, "jfrog_username", s[1])
 		}
 	}
+	*/
 }
 
 func init() {

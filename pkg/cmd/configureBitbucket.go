@@ -16,7 +16,7 @@ limitations under the License.
 package cmd
 
 import (
-	"github.com/nitroci/nitroci-cli/pkg/internal/config"
+	//"github.com/nitroci/nitroci-core/pkg/internal/config"
 
 	"github.com/spf13/cobra"
 )
@@ -35,6 +35,7 @@ var bitbucketConfigureCmd = &cobra.Command{
 }
 
 func configureBitbucketRunner() {
+	/*
 	domain := FlagBitbucketDomain
 	if len(domain) == 0 {
 		_, domain = config.PromptGlobalConfigKey(runtimeContext.Cli.Profile, "Workspace", false)
@@ -47,9 +48,10 @@ func configureBitbucketRunner() {
 	}
 	password := FlagBitbucketPassword
 	if len(password) == 0 {
-		_, password = config.PromptGlobalConfigKey(runtimeContext.Cli.Profile, "Password", true)
-		config.SetGlobalConfigString(runtimeContext.Cli.Profile, "bitbucket_secret", domain)
+		//_, password = config.PromptGlobalConfigKey(runtimeContext.Cli.Profile, "Password", true)
+		//config.SetGlobalConfigString(runtimeContext.Cli.Profile, "bitbucket_secret", domain)
 	}
+	*/
 }
 
 func init() {
