@@ -16,17 +16,15 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
 
 	"github.com/spf13/cobra"
 )
 
 var pipelinesCmd = &cobra.Command{
-	Use:   "pipelines",
+	Use:   "pipeline",
 	Short: "List and interact with configured pipelines",
 	Long:  `List and interact with configured pipelines`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("pipelines called")
 	},
 }
 

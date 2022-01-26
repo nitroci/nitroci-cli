@@ -16,17 +16,15 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
 
 	"github.com/spf13/cobra"
 )
 
 var pluginsCmd = &cobra.Command{
-	Use:   "plugins",
+	Use:   "plugin",
 	Short: "Plugins managament",
 	Long:  `Plugins management`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("plugins called")
 	},
 }
 
