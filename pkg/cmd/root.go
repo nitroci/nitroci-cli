@@ -40,17 +40,21 @@ and it is not tied to a particolar language or farmework.`,
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	profile, _ := rootCmd.PersistentFlags().GetString("profile")
-	verbose, _ := rootCmd.PersistentFlags().GetBool("verbose")
-	workspaceDepth, _ := rootCmd.PersistentFlags().GetInt("workspace")
-	runtimeContext = contexts.LoadRuntimeContext(profile, verbose, workspaceDepth)
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
 	}
 }
 
+func initRoot() {
+	profile, _ := rootCmd.PersistentFlags().GetString("profile")
+	verbose, _ := rootCmd.PersistentFlags().GetBool("verbose")
+	workspaceDepth, _ := rootCmd.PersistentFlags().GetInt("workspace")
+	runtimeContext = contexts.LoadRuntimeContext(profile, verbose, workspaceDepth)
+}
+
 func init() {
+	cobra.OnInitialize(initRoot)
 	rootCmd.PersistentFlags().StringP("profile", "p", "default", "set a specific profile")
 	rootCmd.PersistentFlags().IntP("workspace", "w", 0, "set current workspace")
 	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "output verbose output")

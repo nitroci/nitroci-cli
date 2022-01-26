@@ -16,27 +16,65 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
+
+	"github.com/nitroci/nitroci-core/pkg/core/io/terminal"
 	"github.com/spf13/cobra"
 )
 
-var FlagWorkspaceRaw bool
+var (
+	workspaceShow, workspaceRaw bool
+)
 
 var workspaceCmd = &cobra.Command{
 	Use:   "workspace",
-	Short: "Workspace management",
-	Long:  `Workspace management`,
+	Short: "List and interact with configured workspaces",
+	Long:  `List and interact with configured workspaces`,
 	Run: func(cmd *cobra.Command, args []string) {
 		workspaceRunner()
 	},
 }
 
 func workspaceRunner() {
-	workspaceRootRunner()
+	if !workspaceShow {
+		return
+	}
+	if workspaceRaw {
+		if runtimeContext.HasWorkspaces() {
+			workspace, _ := runtimeContext.GetWorkspace(0)
+			fmt.Println(workspace.WorkspaceFileName)
+		}
+		return
+	}
+	if !runtimeContext.HasWorkspaces() {
+		terminal.Print(&terminal.TerminalOutput{
+			Messages:    []string{"Workspace is not initialized"},
+			MessageType: terminal.Error,
+			Output:      "use \"nitroci workspace init\" to initialize the workspace",
+		})
+	} else {
+		files := []string{}
+		workspaces, _ := runtimeContext.GetWorkspaces()
+		for i, w := range workspaces {
+			files = append(files, fmt.Sprintf("%v %v", i+1, w.WorkspaceFileName))
+		}
+		tItems := terminal.TerminalItemsOutput{
+			Messages:    []string{"Intialized workspaces:"},
+			Suggestions: []string{"(use \"nitroci <commamnd> -w <workspace-depth>...\" to switch workspace)"},
+			ItemsType:   terminal.Info,
+			Items:       files,
+		}
+		workspace, _ := runtimeContext.GetWorkspace(0)
+		currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspaceFileName)
+		terminal.Print(&terminal.TerminalOutput{
+			Messages:    []string{"Workspace has been initialized", currentWorkspaceTxt},
+			ItemsOutput: []terminal.TerminalItemsOutput{tItems},
+		})
+	}
 }
 
 func init() {
 	rootCmd.AddCommand(workspaceCmd)
-	workspaceCmd.AddCommand(initWorkspaceCmd)
-	workspaceCmd.AddCommand(encryptWorkspaceCmd)
-	workspaceCmd.Flags().BoolVarP(&FlagWorkspaceRaw, "raw", "r", false, "get a raw result")
+	workspaceCmd.Flags().BoolVarP(&workspaceShow, "show", "s", false, "show configurations")
+	workspaceCmd.Flags().BoolVarP(&workspaceRaw, "raw", "r", false, "output raw configurations")
 }

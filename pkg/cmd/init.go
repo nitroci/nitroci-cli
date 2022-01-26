@@ -21,15 +21,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var environmentsPipelinesCmd = &cobra.Command{
-	Use:   "environments",
-	Short: "Print workspace environments information",
-	Long:  `Print workspace environments information`,
+var iniCmd = &cobra.Command{
+	Use:   "init",
+	Short: "Generate resources for the workspace",
+	Long:  `Generate resources for the workspace`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("environments called")
+		fmt.Println("init called")
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(environmentsPipelinesCmd)
+	rootCmd.AddCommand(iniCmd)
 }

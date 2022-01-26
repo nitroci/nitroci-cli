@@ -50,3 +50,5 @@ require (
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/ini.v1 v1.66.2 // indirect
 )
+
+replace github.com/nitroci/nitroci-core => /Users/nicolagallo/source/nitroci/nitroci-workspace/repos/nitroci-core

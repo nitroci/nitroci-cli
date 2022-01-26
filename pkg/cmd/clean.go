@@ -16,20 +16,17 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
-var environmentsPipelinesCmd = &cobra.Command{
-	Use:   "environments",
-	Short: "Print workspace environments information",
-	Long:  `Print workspace environments information`,
+var cleanCmd = &cobra.Command{
+	Use:   "clean",
+	Short: "Remove object files and cached files",
+	Long:  `Remove object files and cached files`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("environments called")
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(environmentsPipelinesCmd)
+	rootCmd.AddCommand(cleanCmd)
 }

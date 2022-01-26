@@ -31,4 +31,5 @@ var encryptWorkspaceCmd = &cobra.Command{
 }
 
 func init() {
+	workspaceCmd.AddCommand(encryptWorkspaceCmd)
 }

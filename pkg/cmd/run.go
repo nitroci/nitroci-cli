@@ -30,8 +30,8 @@ import (
 
 var runCmd = &cobra.Command{
 	Use:   "run",
-	Short: "Run a workspace command",
-	Long:  `Run a workspace command`,
+	Short: "Run workspace commands",
+	Long:  `Run workspace commands`,
 	Run: func(cmd *cobra.Command, args []string) {
 		runner(args)
 	},
@@ -39,7 +39,7 @@ var runCmd = &cobra.Command{
 
 func runner(args []string) {
 	if !runtimeContext.HasWorkspaces() {
-		workspaceRootRunner()
+		workspaceRunner()
 		return
 	}
 	workspace, _ := runtimeContext.GetCurrentWorkspace()

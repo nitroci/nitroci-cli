@@ -8,7 +8,7 @@ commands:
     steps:
       - cwd: .
         scripts: 
-          - go build -o ./dist . && cp ./dist/nitroci ~/.apps/bin/nitroci
+          - mkdir -p ./dist && go build -o ./dist . && cp ./dist/nitroci-cli ~/.apps/bin/nitroci
   - name: test
     description: Build the command line.
     steps:
