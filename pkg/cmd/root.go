@@ -19,7 +19,6 @@ import (
 	"os"
 
 	"github.com/nitroci/nitroci-core/pkg/core/contexts"
-
 	"github.com/spf13/cobra"
 )
 

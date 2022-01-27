@@ -23,7 +23,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/nitroci/nitroci-core/pkg/core/io/terminal"
+	"github.com/nitroci/nitroci-core/pkg/core/terminal"
 	"github.com/spf13/cobra"
 )
 
