@@ -42,7 +42,7 @@ func runner(args []string) {
 		return
 	}
 	workspace, _ := runtimeContext.GetCurrentWorkspace()
-	workspaceModel, _ := workspace.LoadWorkspaceFile()
+	workspaceModel, _ := workspace.CreateWorkspaceInstance()
 	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspaceFileName)
 	if len(workspaceModel.Commands) == 0 {
 		terminal.Print(&terminal.TerminalOutput{
