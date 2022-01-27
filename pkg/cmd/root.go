@@ -34,7 +34,7 @@ The command line interface implementes devops practices
 and it is not tied to a particolar language or farmework.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	// Run: func(cmd *cobra.Command, args []string) { },ls
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -50,7 +50,11 @@ func initRoot() {
 	profile, _ := rootCmd.PersistentFlags().GetString("profile")
 	verbose, _ := rootCmd.PersistentFlags().GetBool("verbose")
 	workspaceDepth, _ := rootCmd.PersistentFlags().GetInt("workspace")
-	runtimeContext = contexts.LoadRuntimeContext(profile, verbose, workspaceDepth)
+	var err error
+	runtimeContext, err = contexts.LoadRuntimeContext(profile, "", workspaceDepth, verbose)
+	if err != nil {
+		os.Exit(1)
+	}
 }
 
 func init() {
