@@ -20,14 +20,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var environmentsPipelinesCmd = &cobra.Command{
-	Use:   "env",
-	Short: "Print workspace environments information",
-	Long:  `Print workspace environments information`,
+var pipelinesCmd = &cobra.Command{
+	Use:   "pipelines",
+	Short: "List and interact with configured pipelines",
+	Long:  `List and interact with configured pipelines`,
 	Run: func(cmd *cobra.Command, args []string) {
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(environmentsPipelinesCmd)
+	rootCmd.AddCommand(pipelinesCmd)
 }

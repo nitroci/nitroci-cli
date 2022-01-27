@@ -20,14 +20,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var pluginsCmd = &cobra.Command{
-	Use:   "plugin",
-	Short: "Plugins managament",
-	Long:  `Plugins management`,
+var environmentsPipelinesCmd = &cobra.Command{
+	Use:   "envs",
+	Short: "Print workspace environments information",
+	Long:  `Print workspace environments information`,
 	Run: func(cmd *cobra.Command, args []string) {
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(pluginsCmd)
+	rootCmd.AddCommand(environmentsPipelinesCmd)
 }

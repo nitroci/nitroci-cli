@@ -5,16 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "NitroCI - Workspace",
+            "name": "NitroCI - Build",
             "type": "go",
             "request": "launch",
             "mode": "auto",
             "program": "./main.go",
             "args": [
-                "workspace",
-                "--profile",
-                "nitro-dev",
-                "--show",
+                "run",
+                "build",
                 "-v"
             ],
             "env": {

@@ -16,7 +16,6 @@ limitations under the License.
 package cmd
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
 	"os"
@@ -43,7 +42,7 @@ func runner(args []string) {
 	}
 	workspace, _ := runtimeContext.GetCurrentWorkspace()
 	workspaceModel, _ := workspace.CreateWorkspaceInstance()
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspaceFileName)
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspaceFile)
 	if len(workspaceModel.Commands) == 0 {
 		terminal.Print(&terminal.TerminalOutput{
 			Messages: []string{"On workspace", currentWorkspaceTxt},
@@ -72,18 +71,9 @@ func runner(args []string) {
 		if m.Name != (args)[0] {
 			continue
 		}
-		for i, step := range m.Steps {
+		for _, step := range m.Steps {
 			cwd := step.Cwd
-			for j, script := range step.Scripts {
-				step := ""
-				isVerbose := runtimeContext.Cli.Verbose
-				if isVerbose {
-					step = fmt.Sprintf("[Step %v of %v][%v]", i+1, len(m.Steps), j+1)
-				}
-				tAction := &terminal.TerminalActionOutput{
-					StepId: step,
-					Step:   script,
-				}
+			for _, script := range step.Scripts {
 				cmd := exec.Command("sh", "-c", script)
 				if len(cwd) > 0 {
 					if _, err := os.Stat(cwd); errors.Is(err, os.ErrNotExist) {
@@ -94,22 +84,12 @@ func runner(args []string) {
 					}
 					cmd.Dir = cwd
 				}
-				stdout, err := cmd.StdoutPipe()
-				cmd.Stderr = cmd.Stdout
+				cmd.Stdout = os.Stdout
+				cmd.Stderr = os.Stderr
+				err := cmd.Run()
 				if err != nil {
-					fmt.Println(err)
+					fmt.Println("cmd.Run() failed with %s\n", err)
 				}
-				err = cmd.Start()
-				if err != nil {
-					fmt.Println(err)
-				}
-				scanner := bufio.NewScanner(stdout)
-				for scanner.Scan() {
-					m := scanner.Text()
-					tAction.Outputs = append(tAction.Outputs, m)
-					terminal.PrintActions(tAction)
-				}
-				cmd.Wait()
 			}
 		}
 	}

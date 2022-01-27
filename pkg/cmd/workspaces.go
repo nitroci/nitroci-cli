@@ -27,7 +27,7 @@ var (
 )
 
 var workspaceCmd = &cobra.Command{
-	Use:   "workspace",
+	Use:   "workspaces",
 	Short: "List and interact with configured workspaces",
 	Long:  `List and interact with configured workspaces`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -42,7 +42,7 @@ func workspaceRunner() {
 	if workspaceRaw {
 		if runtimeContext.HasWorkspaces() {
 			workspace, _ := runtimeContext.GetWorkspace(0)
-			fmt.Println(workspace.WorkspaceFileName)
+			fmt.Println(workspace.WorkspaceFile)
 		}
 		return
 	}
@@ -56,7 +56,7 @@ func workspaceRunner() {
 		files := []string{}
 		workspaces, _ := runtimeContext.GetWorkspaces()
 		for i, w := range workspaces {
-			files = append(files, fmt.Sprintf("%v %v", i+1, w.WorkspaceFileName))
+			files = append(files, fmt.Sprintf("%v %v", i+1, w.WorkspaceFile))
 		}
 		tItems := terminal.TerminalItemsOutput{
 			Messages:    []string{"Intialized workspaces:"},
@@ -65,7 +65,7 @@ func workspaceRunner() {
 			Items:       files,
 		}
 		workspace, _ := runtimeContext.GetWorkspace(0)
-		currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspaceFileName)
+		currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspaceFile)
 		terminal.Print(&terminal.TerminalOutput{
 			Messages:    []string{"Workspace has been initialized", currentWorkspaceTxt},
 			ItemsOutput: []terminal.TerminalItemsOutput{tItems},

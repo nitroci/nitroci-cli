@@ -20,14 +20,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var pipelinesCmd = &cobra.Command{
-	Use:   "pipeline",
-	Short: "List and interact with configured pipelines",
-	Long:  `List and interact with configured pipelines`,
+var pluginsCmd = &cobra.Command{
+	Use:   "plugins",
+	Short: "Plugins managament",
+	Long:  `Plugins management`,
 	Run: func(cmd *cobra.Command, args []string) {
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(pipelinesCmd)
+	rootCmd.AddCommand(pluginsCmd)
 }
