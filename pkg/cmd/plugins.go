@@ -16,6 +16,7 @@ limitations under the License.
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -32,16 +33,15 @@ var pluginsCmd = &cobra.Command{
 	Short: "Plugins managament",
 	Long:  `Plugins management`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if !runtimeContext.HasWorkspaces() {
+			return errors.New("workspace is not initialized")
+		}
 		return pluginsRunner()
 	},
 }
 
 func pluginsRunner() error {
 	if !pluginsShow {
-		return nil
-	}
-	if !runtimeContext.HasWorkspaces() {
-		workspaceRunner()
 		return nil
 	}
 	workspace, err := runtimeContext.GetCurrentWorkspace()

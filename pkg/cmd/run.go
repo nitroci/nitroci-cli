@@ -35,15 +35,14 @@ var runCmd = &cobra.Command{
 	Short: "Run workspace commands",
 	Long:  `Run workspace commands`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if !runtimeContext.HasWorkspaces() {
+			return errors.New("workspace is not initialized")
+		}
 		return runner(args)
 	},
 }
 
 func runner(args []string) error {
-	if !runtimeContext.HasWorkspaces() {
-		workspaceRunner()
-		return nil
-	}
 	workspace, err := runtimeContext.GetCurrentWorkspace()
 	if err != nil {
 		return err

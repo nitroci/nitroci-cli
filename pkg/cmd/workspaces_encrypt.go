@@ -16,6 +16,8 @@ limitations under the License.
 package cmd
 
 import (
+	"errors"
+
 	"github.com/spf13/cobra"
 )
 
@@ -24,6 +26,9 @@ var encryptWorkspaceCmd = &cobra.Command{
 	Short: "Encrypt workspace files",
 	Long:  `Encrypt workspace files`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if !runtimeContext.HasWorkspaces() {
+			return errors.New("workspace is not initialized")
+		}
 		return nil
 	},
 }

@@ -50,7 +50,7 @@ func initRoot() {
 	verbose, _ := rootCmd.PersistentFlags().GetBool("verbose")
 	workspaceDepth, _ := rootCmd.PersistentFlags().GetInt("workspace")
 	var err error
-	runtimeContext, err = contexts.LoadRuntimeContext(profile, "", workspaceDepth -1, verbose)
+	runtimeContext, err = contexts.LoadRuntimeContext(profile, "", workspaceDepth-1, verbose)
 	if err != nil {
 		os.Exit(1)
 	}

@@ -16,6 +16,7 @@ limitations under the License.
 package cmd
 
 import (
+	"errors"
 
 	"github.com/spf13/cobra"
 )
@@ -25,6 +26,9 @@ var pipelinesCmd = &cobra.Command{
 	Short: "List and interact with configured pipelines",
 	Long:  `List and interact with configured pipelines`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if !runtimeContext.HasWorkspaces() {
+			return errors.New("workspace is not initialized")
+		}
 		return nil
 	},
 }
