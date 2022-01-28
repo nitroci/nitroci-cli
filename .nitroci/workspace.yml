@@ -2,6 +2,11 @@ version: 1
 workspace:
   id: 1b22114a4b684ad3980e858f36ddab41
   name: nitroci-cli
+  plugins:
+    - name: bitbucket
+      version: 0.0.2
+    - name: jfrog
+      version: 0.0.2
 commands:
   - name: build
     description: Build the command line.

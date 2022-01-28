@@ -26,7 +26,7 @@ var (
 	workspaceShow, workspaceRaw bool
 )
 
-var workspaceCmd = &cobra.Command{
+var workspacesCmd = &cobra.Command{
 	Use:   "workspaces",
 	Short: "List and interact with configured workspaces",
 	Long:  `List and interact with configured workspaces`,
@@ -42,7 +42,7 @@ func workspaceRunner() {
 	if workspaceRaw {
 		if runtimeContext.HasWorkspaces() {
 			workspace, _ := runtimeContext.GetWorkspace(0)
-			fmt.Println(workspace.WorkspaceFile)
+			fmt.Println(workspace.WorkspacePath)
 		}
 		return
 	}
@@ -56,7 +56,7 @@ func workspaceRunner() {
 		files := []string{}
 		workspaces, _ := runtimeContext.GetWorkspaces()
 		for i, w := range workspaces {
-			files = append(files, fmt.Sprintf("%v %v", i+1, w.WorkspaceFile))
+			files = append(files, fmt.Sprintf("%v %v", i+1, w.WorkspacePath))
 		}
 		tItems := terminal.TerminalItemsOutput{
 			Messages:    []string{"Intialized workspaces:"},
@@ -65,7 +65,7 @@ func workspaceRunner() {
 			Items:       files,
 		}
 		workspace, _ := runtimeContext.GetWorkspace(0)
-		currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspaceFile)
+		currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspacePath)
 		terminal.Print(&terminal.TerminalOutput{
 			Messages:    []string{"Workspace has been initialized", currentWorkspaceTxt},
 			ItemsOutput: []terminal.TerminalItemsOutput{tItems},
@@ -74,7 +74,7 @@ func workspaceRunner() {
 }
 
 func init() {
-	rootCmd.AddCommand(workspaceCmd)
-	workspaceCmd.Flags().BoolVarP(&workspaceShow, "show", "s", false, "show configurations")
-	workspaceCmd.Flags().BoolVarP(&workspaceRaw, "raw", "r", false, "output raw configurations")
+	rootCmd.AddCommand(workspacesCmd)
+	workspacesCmd.Flags().BoolVarP(&workspaceShow, "show", "s", false, "show configurations")
+	workspacesCmd.Flags().BoolVarP(&workspaceRaw, "raw", "r", false, "output raw configurations")
 }

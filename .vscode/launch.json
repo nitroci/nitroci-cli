@@ -15,8 +15,20 @@
                 "build",
                 "-v"
             ],
-            "env": {
-            }
+            "env": {}
+        },
+        {
+            "name": "NitroCI - Pipelines Install",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "./main.go",
+            "args": [
+                "plugins",
+                "install",
+                "-v"
+            ],
+            "env": {}
         }
     ]
 }

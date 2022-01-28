@@ -16,7 +16,6 @@ limitations under the License.
 package cmd
 
 import (
-
 	"github.com/spf13/cobra"
 )
 
@@ -29,5 +28,5 @@ var encryptWorkspaceCmd = &cobra.Command{
 }
 
 func init() {
-	workspaceCmd.AddCommand(encryptWorkspaceCmd)
+	workspacesCmd.AddCommand(encryptWorkspaceCmd)
 }

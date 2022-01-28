@@ -30,25 +30,25 @@ var runCmd = &cobra.Command{
 	Use:   "run",
 	Short: "Run workspace commands",
 	Long:  `Run workspace commands`,
-	Run: func(cmd *cobra.Command, args []string) {
-		runner(args)
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return runner(args)
 	},
 }
 
-func runner(args []string) {
+func runner(args []string) error {
 	if !runtimeContext.HasWorkspaces() {
 		workspaceRunner()
-		return
+		return nil
 	}
 	workspace, _ := runtimeContext.GetCurrentWorkspace()
 	workspaceModel, _ := workspace.CreateWorkspaceInstance()
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspaceFile)
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspacePath)
 	if len(workspaceModel.Commands) == 0 {
 		terminal.Print(&terminal.TerminalOutput{
 			Messages: []string{"On workspace", currentWorkspaceTxt},
 			Output:   "Workspace doesn't implement commands to be executed.",
 		})
-		return
+		return nil
 	}
 	if len(args) != 1 || len((args)[0]) == 0 {
 		commands := make([]string, len(workspaceModel.Commands))
@@ -65,7 +65,7 @@ func runner(args []string) {
 			Messages:    []string{"On workspace", currentWorkspaceTxt},
 			ItemsOutput: []terminal.TerminalItemsOutput{tItems1},
 		})
-		return
+		return nil
 	}
 	for _, m := range workspaceModel.Commands {
 		if m.Name != (args)[0] {
@@ -79,7 +79,7 @@ func runner(args []string) {
 					if _, err := os.Stat(cwd); errors.Is(err, os.ErrNotExist) {
 						err := os.Mkdir(cwd, os.ModePerm)
 						if err != nil {
-							os.Exit(1)
+							return err
 						}
 					}
 					cmd.Dir = cwd
@@ -88,11 +88,12 @@ func runner(args []string) {
 				cmd.Stderr = os.Stderr
 				err := cmd.Run()
 				if err != nil {
-					fmt.Println("cmd.Run() failed with %s\n", err)
+					return err
 				}
 			}
 		}
 	}
+	return nil
 }
 
 func init() {
