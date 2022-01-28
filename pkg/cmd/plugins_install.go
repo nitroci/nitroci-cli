@@ -44,16 +44,21 @@ func pluginsInstallRunner() error {
 	}
 	wksModel, _ := workspace.CreateWorkspaceInstance()
 	cachePluginsPath := runtimeContext.Cli.Settings[contexts.CFG_NAME_CACHE_PLUGINS_PATH]
+	wksCachePluginsPath := path.Join(path.Join(workspace.WorkspaceFileFolder, "cache"), "packages")
+	pluginsMap := map[string][]string{}
 	for _,plugin := range wksModel.Workspace.Plugins {
 		registryName := plugin.Registry
 		if len(registryName) == 0 {
 			registryName = runtimeContext.Cli.Settings[contexts.CFG_NAME_PLUGINS_REGISTRY]
 		}
+		if _, ok := pluginsMap[registryName]; !ok {
+			pluginsMap[registryName] = []string{}
+		}
 		registry, err := registries.GetRegistry(registryName)
 		if err != nil {
 			return fmt.Errorf("invalid registry %v", registryName)
 		}
-		wksCachePluginsPath := path.Join(path.Join(workspace.WorkspaceFileFolder, "cache"), "packages")
+		pluginsMap[registryName] = append(pluginsMap[registryName], plugin.Name + "@" + plugin.Version)
 		err = registries.Download(plugin.Name, plugin.Version, cachePluginsPath, wksCachePluginsPath, registry)
 		if err != nil {
 			return err
