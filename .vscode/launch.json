@@ -46,7 +46,7 @@
             "env": {}
         },
         {
-            "name": "NitroCI - Pipelines Install",
+            "name": "NitroCI - Plugins Install",
             "type": "go",
             "request": "launch",
             "mode": "auto",
