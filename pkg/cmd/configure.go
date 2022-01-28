@@ -31,21 +31,21 @@ var configureCmd = &cobra.Command{
 	Use:   "configure",
 	Short: "Show or modify configurations",
 	Long:  `Show or modify configurations`,
-	Run: func(cmd *cobra.Command, args []string) {
-		configurationRunner()
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return configurationRunner()
 	},
 }
 
-func configurationRunner() {
+func configurationRunner() error {
 	if !configureShow {
-		return
+		return nil
 	}
 	globalConfig := runtimeContext.Cli.Settings[contexts.CFG_NAME_CONFIG_PATH]
 	if configureRaw {
 		if len(globalConfig) > 0 {
 			fmt.Println(globalConfig)
 		}
-		return
+		return nil
 	}
 	if len(globalConfig) == 0 {
 		terminal.Print(&terminal.TerminalOutput{
@@ -65,6 +65,7 @@ func configurationRunner() {
 			ItemsOutput: []terminal.TerminalItemsOutput{tItems},
 		})
 	}
+	return nil
 }
 
 func init() {

@@ -24,7 +24,8 @@ var iniCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Generate resources for the workspace",
 	Long:  `Generate resources for the workspace`,
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return nil
 	},
 }
 

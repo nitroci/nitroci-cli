@@ -23,7 +23,8 @@ var encryptWorkspaceCmd = &cobra.Command{
 	Use:   "encrypt",
 	Short: "Encrypt workspace files",
 	Long:  `Encrypt workspace files`,
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return nil
 	},
 }
 

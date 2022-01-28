@@ -31,20 +31,23 @@ var pluginsCmd = &cobra.Command{
 	Use:   "plugins",
 	Short: "Plugins managament",
 	Long:  `Plugins management`,
-	Run: func(cmd *cobra.Command, args []string) {
-		pluginsRunner()
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return pluginsRunner()
 	},
 }
 
-func pluginsRunner() {
+func pluginsRunner() error {
 	if !pluginsShow {
-		return
+		return nil
 	}
 	if !runtimeContext.HasWorkspaces() {
 		workspaceRunner()
-		return
+		return nil
 	}
-	workspace, _ := runtimeContext.GetCurrentWorkspace()
+	workspace, err := runtimeContext.GetCurrentWorkspace()
+	if err != nil {
+		return err
+	}
 	workspaceModel, _ := workspace.CreateWorkspaceInstance()
 	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspacePath)
 	if len(workspaceModel.Workspace.Plugins) == 0 {
@@ -78,6 +81,7 @@ func pluginsRunner() {
 			})
 		}		
 	}
+	return nil
 }
 
 func init() {

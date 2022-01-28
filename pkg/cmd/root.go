@@ -50,7 +50,7 @@ func initRoot() {
 	verbose, _ := rootCmd.PersistentFlags().GetBool("verbose")
 	workspaceDepth, _ := rootCmd.PersistentFlags().GetInt("workspace")
 	var err error
-	runtimeContext, err = contexts.LoadRuntimeContext(profile, "", workspaceDepth, verbose)
+	runtimeContext, err = contexts.LoadRuntimeContext(profile, "", workspaceDepth -1, verbose)
 	if err != nil {
 		os.Exit(1)
 	}
@@ -59,6 +59,6 @@ func initRoot() {
 func init() {
 	cobra.OnInitialize(initRoot)
 	rootCmd.PersistentFlags().StringP("profile", "p", "default", "set a specific profile")
-	rootCmd.PersistentFlags().IntP("workspace", "w", 0, "set current workspace")
+	rootCmd.PersistentFlags().IntP("workspace", "w", 1, "set current workspace")
 	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "output verbose output")
 }

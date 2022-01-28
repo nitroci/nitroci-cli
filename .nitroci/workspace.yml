@@ -9,13 +9,13 @@ workspace:
       version: 0.0.2
 commands:
   - name: build
-    description: Build the command line.
+    description: Build the command line
     steps:
       - cwd: .
         scripts: 
           - mkdir -p ./dist && go build -o ./dist . && cp ./dist/nitroci-cli ~/.apps/bin/nitroci
   - name: test
-    description: Build the command line.
+    description: Build the command line
     steps:
       - scripts: 
           - for i in {1..5}; do sleep 1 && echo $i; done

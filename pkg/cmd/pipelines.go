@@ -24,7 +24,8 @@ var pipelinesCmd = &cobra.Command{
 	Use:   "pipelines",
 	Short: "List and interact with configured pipelines",
 	Long:  `List and interact with configured pipelines`,
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return nil
 	},
 }
 

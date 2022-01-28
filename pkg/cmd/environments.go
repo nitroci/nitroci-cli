@@ -24,7 +24,8 @@ var environmentsPipelinesCmd = &cobra.Command{
 	Use:   "envs",
 	Short: "Print workspace environments information",
 	Long:  `Print workspace environments information`,
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return nil
 	},
 }
 

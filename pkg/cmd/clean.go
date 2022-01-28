@@ -24,7 +24,8 @@ var cleanCmd = &cobra.Command{
 	Use:   "clean",
 	Short: "Remove object files and cached files",
 	Long:  `Remove object files and cached files`,
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return nil
 	},
 }
 

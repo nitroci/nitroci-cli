@@ -21,7 +21,6 @@ import (
 
 	"github.com/nitroci/nitroci-core/pkg/core/contexts"
 	"github.com/nitroci/nitroci-core/pkg/core/registries"
-	"github.com/nitroci/nitroci-core/pkg/core/registries/plugins"
 	"github.com/spf13/cobra"
 )
 
@@ -39,7 +38,10 @@ func pluginsInstallRunner() error {
 		workspaceRunner()
 		return nil
 	}
-	workspace, _ := runtimeContext.GetCurrentWorkspace()
+	workspace, err := runtimeContext.GetCurrentWorkspace()
+	if err != nil {
+		return err
+	}
 	wksModel, _ := workspace.CreateWorkspaceInstance()
 	cachePluginsPath := runtimeContext.Cli.Settings[contexts.CFG_NAME_CACHE_PLUGINS_PATH]
 	for _,m := range wksModel.Workspace.Plugins {
@@ -52,7 +54,7 @@ func pluginsInstallRunner() error {
 			return fmt.Errorf("invalid registry %v", registryName)
 		}
 		wksCachePluginsPath := path.Join(path.Join(workspace.WorkspaceFileFolder, "cache"), "packages")
-		err = registries.Download(cachePluginsPath, wksCachePluginsPath, registry, plugins.DownloadPlugins)
+		err = registries.Download(cachePluginsPath, wksCachePluginsPath, registry)
 		if err != nil {
 			return err
 		}
