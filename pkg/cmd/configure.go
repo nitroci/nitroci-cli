@@ -43,7 +43,7 @@ func configurationRunner() error {
 	globalConfig := runtimeContext.Cli.Settings[contexts.CFG_NAME_CONFIG_PATH]
 	if configureRaw {
 		if len(globalConfig) > 0 {
-			fmt.Println(globalConfig)
+			terminal.Println(globalConfig)
 		}
 		return nil
 	}

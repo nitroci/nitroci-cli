@@ -48,7 +48,7 @@ func workspaceRunner() error {
 		if err != nil {
 			return err
 		}
-		fmt.Println(workspace.WorkspacePath)
+		terminal.Println(workspace.WorkspacePath)
 		return nil
 	}
 	files := []string{}

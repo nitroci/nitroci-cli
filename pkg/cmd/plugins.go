@@ -18,9 +18,9 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"strings"
 
 	"github.com/nitroci/nitroci-core/pkg/core/terminal"
+	"github.com/nitroci/nitroci-core/pkg/core/registries"
 	"github.com/spf13/cobra"
 )
 
@@ -60,12 +60,12 @@ func pluginsRunner() error {
 	} else {
 		if pluginsRaw {
 			for _, m := range workspaceModel.Workspace.Plugins {
-				fmt.Printf("%v@%v\n", m.Name, m.Version)
+				terminal.Println(registries.GetPackageName(m.Name, m.Version))
 			}
 		} else {
 			commands := make([]string, len(workspaceModel.Commands))
 			for i, m := range workspaceModel.Workspace.Plugins {
-				commands[i] = strings.ToLower(m.Name) + "@" + strings.ToLower(m.Version)
+				commands[i] = registries.GetPackageName(m.Name, m.Version)
 			}
 			tItems1 := terminal.TerminalItemsOutput{
 				Messages:    []string{"Run one of the following commands:"},

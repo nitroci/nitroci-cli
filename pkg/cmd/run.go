@@ -62,7 +62,7 @@ func runner(args []string) error {
 		if len(args) != 1 || len(args[0]) == 0 {
 			if runRaw {
 				for _, m := range workspaceModel.Commands {
-					fmt.Println(strings.ToLower(m.Name) + ": " + strings.ToLower(m.Description))
+					terminal.Println(strings.ToLower(m.Name) + ": " + strings.ToLower(m.Description))
 				}
 			} else {
 				commands := make([]string, len(workspaceModel.Commands))
