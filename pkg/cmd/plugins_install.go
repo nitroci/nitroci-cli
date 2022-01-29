@@ -18,7 +18,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"path"
+	"path/filepath"
 
 	"github.com/nitroci/nitroci-core/pkg/core/contexts"
 	"github.com/nitroci/nitroci-core/pkg/core/registries"
@@ -44,27 +44,23 @@ func pluginsInstallRunner() error {
 	}
 	wksModel, _ := workspace.CreateWorkspaceInstance()
 	cachePluginsPath := runtimeContext.Cli.Settings[contexts.CFG_NAME_CACHE_PLUGINS_PATH]
-	wksCachePluginsPath := path.Join(path.Join(workspace.WorkspaceFileFolder, "cache"), "packages")
-	pluginsMap := map[string][]string{}
+	wksCachePluginsPath := filepath.Join(filepath.Join(workspace.WorkspaceFileFolder, "cache"), "packages")
+	registryMap := registries.CreateRegistryMap(cachePluginsPath, wksCachePluginsPath, runtimeContext.Cli.Goos, runtimeContext.Cli.Goarch)
 	for _,plugin := range wksModel.Workspace.Plugins {
-		registryName := plugin.Registry
-		if len(registryName) == 0 {
-			registryName = runtimeContext.Cli.Settings[contexts.CFG_NAME_PLUGINS_REGISTRY]
+		registryKey := plugin.Registry
+		if len(registryKey) == 0 {
+			registryKey = runtimeContext.Cli.Settings[contexts.CFG_NAME_PLUGINS_REGISTRY]
 		}
-		if _, ok := pluginsMap[registryName]; !ok {
-			pluginsMap[registryName] = []string{}
-		}
-		registry, err := registries.GetRegistry(registryName)
-		if err != nil {
-			return fmt.Errorf("invalid registry %v", registryName)
-		}
-		pluginsMap[registryName] = append(pluginsMap[registryName], plugin.Name + "@" + plugin.Version)
-		err = registries.Download(plugin.Name, plugin.Version, cachePluginsPath, wksCachePluginsPath, registry)
+		err = registryMap.AddDependency(registryKey, plugin.Name, plugin.Version)
 		if err != nil {
 			return err
 		}
 	}
-	return nil
+	return registryMap.Download(func(s string) {
+		fmt.Println(s)
+	}, func(s string) {
+		fmt.Println(s)
+	})
 }
 
 func init() {
