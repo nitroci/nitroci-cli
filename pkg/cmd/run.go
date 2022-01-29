@@ -49,7 +49,7 @@ func runner(args []string) error {
 	}
 	workspaceModel, _ := workspace.CreateWorkspaceInstance()
 	if runShow {
-		currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspacePath)
+		currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", terminal.ConvertToCyanColor(workspace.WorkspacePath))
 		if len(workspaceModel.Commands) == 0 {
 			if !runRaw {
 				terminal.Print(&terminal.TerminalOutput{

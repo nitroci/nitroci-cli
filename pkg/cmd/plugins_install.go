@@ -16,8 +16,8 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 	"path/filepath"
 
 	"github.com/nitroci/nitroci-core/pkg/core/contexts"
@@ -43,11 +43,11 @@ func pluginsInstallRunner() error {
 	if err != nil {
 		return err
 	}
-	wksModel,err  := workspace.CreateWorkspaceInstance()
+	wksModel, err := workspace.CreateWorkspaceInstance()
 	if err != nil {
 		return err
 	}
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspacePath)
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", terminal.ConvertToCyanColor(workspace.WorkspacePath))
 	if len(wksModel.Workspace.Plugins) == 0 {
 		terminal.Print(&terminal.TerminalOutput{
 			Messages:    []string{"Workspace doesn't require any plugin", currentWorkspaceTxt},
@@ -82,7 +82,7 @@ func pluginsInstallRunner() error {
 	})
 
 	tAction := &terminal.TerminalActionOutput{
-		Step: "Downloading plugins",
+		Step:    "Downloading plugins",
 		Outputs: []string{},
 	}
 	terminal.PrintActions(tAction)
@@ -91,7 +91,7 @@ func pluginsInstallRunner() error {
 		terminal.PrintActions(tAction)
 	}
 	printKoFunc := func(text string) {
-		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", terminal.RedTextColor(text)))
+		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", terminal.ConvertToRedColor(text)))
 		terminal.PrintActions(tAction)
 	}
 	return registryMap.Download(printOkFunc, printKoFunc)

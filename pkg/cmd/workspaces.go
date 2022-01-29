@@ -69,7 +69,7 @@ func workspaceRunner() error {
 	if err != nil {
 		return err
 	}
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspacePath)
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", terminal.ConvertToCyanColor(workspace.WorkspacePath))
 	terminal.Print(&terminal.TerminalOutput{
 		Messages:    []string{"Workspace has been initialized", currentWorkspaceTxt},
 		ItemsOutput: []terminal.TerminalItemsOutput{tItems},

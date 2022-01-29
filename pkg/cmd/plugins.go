@@ -49,7 +49,7 @@ func pluginsRunner() error {
 		return err
 	}
 	workspaceModel, _ := workspace.CreateWorkspaceInstance()
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", workspace.WorkspacePath)
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", terminal.ConvertToCyanColor(workspace.WorkspacePath))
 	if len(workspaceModel.Workspace.Plugins) == 0 {
 		if !pluginsRaw {
 			terminal.Print(&terminal.TerminalOutput{
