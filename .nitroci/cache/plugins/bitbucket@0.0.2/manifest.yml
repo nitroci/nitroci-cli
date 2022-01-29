@@ -1,0 +1,22 @@
+id: 3b411d416b8d49838887ca32a08d32f2
+name: bitbucket
+operations:
+    configure:
+        enabled: true
+        flags:
+            - name: bitbucket-workspace
+              shorthand:
+              type: string
+              usage: bitbucket workspace
+            - name: bitbucket-user
+              shorthand:
+              type: string
+              usage: bitbucket user
+            - name: bitbucket-pass
+              shorthand:
+              type: string
+              usage: bitbucket password
+    environments:
+        enabled: true
+    pipelines:
+        enabled: true
