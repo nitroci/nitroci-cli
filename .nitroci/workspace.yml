@@ -4,9 +4,9 @@ workspace:
   name: nitroci-cli
   plugins:
     - name: bitbucket
-      version: 0.0.2
+      version: 0.0.4
     - name: jfrog
-      version: 0.0.2
+      version: 0.0.3
 commands:
   - name: build
     description: Build the command line
