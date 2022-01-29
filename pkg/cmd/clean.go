@@ -62,7 +62,6 @@ func cleanRunner() error {
 			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", terminal.ConvertToRedColor(cachePluginsPath)))
 			terminal.PrintActions(tAction)
 			return err
-			return err
 		}
 		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", cachePluginsPath))
 		terminal.PrintActions(tAction)
