@@ -32,8 +32,8 @@ var versionCmd = &cobra.Command{
 }
 
 func versionRunner() {
-	terminal.Println(fmt.Sprintf("Goos: %v", runtimeContext.Cli.Goos))
-	terminal.Println(fmt.Sprintf("Goarch: %v", runtimeContext.Cli.Goarch))
+	terminal.Println(fmt.Sprintf("GOOS: %v", runtimeContext.Cli.Goos))
+	terminal.Println(fmt.Sprintf("GOARCH: %v", runtimeContext.Cli.Goarch))
 }
 
 func init() {
