@@ -30,7 +30,7 @@ require (
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect
 	github.com/mitchellh/mapstructure v1.4.3 // indirect
-	github.com/nitroci/nitroci-core v0.0.0-20220124190002-114167d63f42 // indirect
+	github.com/nitroci/nitroci-core v0.0.0-20220129173043-723f379c05d2 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/spf13/afero v1.7.0 // indirect
 	github.com/spf13/cast v1.4.1 // indirect
@@ -50,5 +50,3 @@ require (
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/ini.v1 v1.66.2 // indirect
 )
-
-replace github.com/nitroci/nitroci-core => /Users/nicolagallo/source/nitroci/nitroci-workspace/repos/nitroci-core

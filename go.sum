@@ -312,6 +312,8 @@ github.com/nitroci/nitroci-core v0.0.0-20220123092705-35f2c0900354 h1:Vc6bS7B3Vg
 github.com/nitroci/nitroci-core v0.0.0-20220123092705-35f2c0900354/go.mod h1:TNNy1dgrQDe1uptHaf8D7xRs/vQXLV6iRsiJE88qmlE=
 github.com/nitroci/nitroci-core v0.0.0-20220124190002-114167d63f42 h1:0DgNodidG5q0oS9L/EzpM14BFA2Raw1AQBK59WkZolo=
 github.com/nitroci/nitroci-core v0.0.0-20220124190002-114167d63f42/go.mod h1:jJ958t/stTW2S2QZNKDVZdaQgJ7GYmUfzlT2cIy727o=
+github.com/nitroci/nitroci-core v0.0.0-20220129173043-723f379c05d2 h1:tRIctyHd5Q569+pAG1Zot/WfEjvgm+zsifiONk+VMr8=
+github.com/nitroci/nitroci-core v0.0.0-20220129173043-723f379c05d2/go.mod h1:jJ958t/stTW2S2QZNKDVZdaQgJ7GYmUfzlT2cIy727o=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
 github.com/pascaldekloe/goe v0.1.0/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
 github.com/pelletier/go-toml v1.9.4 h1:tjENF6MfZAg8e4ZmZTeWaWiT2vXtsoO6+iuOjFhECwM=
