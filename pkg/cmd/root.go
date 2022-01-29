@@ -17,9 +17,11 @@ package cmd
 
 import (
 	"os"
+	"path/filepath"
 
 	"github.com/nitroci/nitroci-core/pkg/core/contexts"
 	"github.com/nitroci/nitroci-core/pkg/core/terminal"
+	cliPlugins "github.com/nitroci/nitroci-cli/pkg/plugins"
 	"github.com/spf13/cobra"
 )
 
@@ -59,6 +61,18 @@ func initRoot() {
 		terminal.Println(terminal.ConvertToRedColor(err.Error()))
 		os.Exit(1)
 	}
+	workspace, err := runtimeContext.GetCurrentWorkspace()
+	if err != nil {
+		terminal.Println(terminal.ConvertToRedColor(err.Error()))
+		os.Exit(1)
+	}
+	pluginPath := filepath.Join(filepath.Join(workspace.WorkspaceFileFolder, "cache"), "plugins")
+	pluginModels, err := cliPlugins.LoadPlugins(runtimeContext, pluginPath)
+	if err != nil {
+		terminal.Println(terminal.ConvertToRedColor(err.Error()))
+		os.Exit(1)
+	}
+	terminal.Println(len(pluginModels))
 }
 
 func init() {

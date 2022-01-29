@@ -17,7 +17,6 @@ package cmd
 
 import (
 	"fmt"
-
 	"github.com/nitroci/nitroci-core/pkg/core/contexts"
 	"github.com/nitroci/nitroci-core/pkg/core/terminal"
 	"github.com/spf13/cobra"
