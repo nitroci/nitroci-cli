@@ -16,8 +16,15 @@ limitations under the License.
 package cmd
 
 import (
+	"os"
+	"path/filepath"
 
+	"github.com/nitroci/nitroci-core/pkg/core/contexts"
 	"github.com/spf13/cobra"
+)
+
+var (
+	cleanGlobalCache, cleanLocalCache bool
 )
 
 var cleanCmd = &cobra.Command{
@@ -25,10 +32,35 @@ var cleanCmd = &cobra.Command{
 	Short: "Remove object files and cached files",
 	Long:  `Remove object files and cached files`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return nil
+		return cleanRunner()
 	},
 }
 
+func cleanRunner() error {
+	workspace, err := runtimeContext.GetCurrentWorkspace()
+	if err != nil {
+		return err
+	}
+	if cleanGlobalCache {
+		cachePluginsPath := runtimeContext.Cli.Settings[contexts.CFG_NAME_CACHE_PATH]
+		err := os.RemoveAll(cachePluginsPath)
+		if err != nil {
+			return err
+		}
+	}
+	if cleanLocalCache {
+		wksCachePluginsPath := filepath.Join(workspace.WorkspaceFileFolder, "cache")
+		err := os.RemoveAll(wksCachePluginsPath)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+
 func init() {
 	rootCmd.AddCommand(cleanCmd)
+	cleanCmd.Flags().BoolVar(&cleanGlobalCache, "global-cache", false, "clean global cache")
+	cleanCmd.Flags().BoolVar(&cleanLocalCache, "local-cache", false, "clean local cache")
 }
