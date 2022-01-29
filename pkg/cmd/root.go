@@ -19,6 +19,7 @@ import (
 	"os"
 
 	"github.com/nitroci/nitroci-core/pkg/core/contexts"
+	"github.com/nitroci/nitroci-core/pkg/core/terminal"
 	"github.com/spf13/cobra"
 )
 
@@ -43,6 +44,7 @@ func Execute() {
 	rootCmd.SilenceUsage = true
 	err := rootCmd.Execute()
 	if err != nil {
+		terminal.Println(terminal.ConvertToRedColor(err.Error()))
 		os.Exit(1)
 	}
 }
@@ -54,6 +56,7 @@ func initRoot() {
 	var err error
 	runtimeContext, err = contexts.LoadRuntimeContext(profile, "", workspaceDepth-1, verbose)
 	if err != nil {
+		terminal.Println(terminal.ConvertToRedColor(err.Error()))
 		os.Exit(1)
 	}
 }

@@ -16,10 +16,12 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
 	"github.com/nitroci/nitroci-core/pkg/core/contexts"
+	"github.com/nitroci/nitroci-core/pkg/core/terminal"
 	"github.com/spf13/cobra"
 )
 
@@ -37,23 +39,44 @@ var cleanCmd = &cobra.Command{
 }
 
 func cleanRunner() error {
+	if !cleanGlobalCache && !cleanLocalCache {
+		return nil
+	}
 	workspace, err := runtimeContext.GetCurrentWorkspace()
 	if err != nil {
 		return err
 	}
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", terminal.ConvertToCyanColor(workspace.WorkspacePath))
+	terminal.Print(&terminal.TerminalOutput{
+		Messages:    []string{"Cache is going to be cleaned", currentWorkspaceTxt},
+	})
+	tAction := &terminal.TerminalActionOutput{
+		Step:    "Cleaning cache",
+		Outputs: []string{},
+	}
+	terminal.PrintActions(tAction)
 	if cleanGlobalCache {
 		cachePluginsPath := runtimeContext.Cli.Settings[contexts.CFG_NAME_CACHE_PATH]
 		err := os.RemoveAll(cachePluginsPath)
 		if err != nil {
+			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", terminal.ConvertToRedColor(cachePluginsPath)))
+			terminal.PrintActions(tAction)
+			return err
 			return err
 		}
+		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", cachePluginsPath))
+		terminal.PrintActions(tAction)
 	}
 	if cleanLocalCache {
 		wksCachePluginsPath := filepath.Join(workspace.WorkspaceFileFolder, "cache")
 		err := os.RemoveAll(wksCachePluginsPath)
 		if err != nil {
+			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", terminal.ConvertToRedColor(wksCachePluginsPath)))
+			terminal.PrintActions(tAction)
 			return err
 		}
+		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", wksCachePluginsPath))
+		terminal.PrintActions(tAction)
 	}
 	return nil
 }
