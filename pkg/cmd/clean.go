@@ -80,7 +80,6 @@ func cleanRunner() error {
 	return nil
 }
 
-
 func init() {
 	rootCmd.AddCommand(cleanCmd)
 	cleanCmd.Flags().BoolVar(&cleanGlobalCache, "global-cache", false, "clean global cache")
