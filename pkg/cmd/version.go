@@ -18,7 +18,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/nitroci/nitroci-core/pkg/core/terminal"
+	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
+
 	"github.com/spf13/cobra"
 )
 
@@ -32,8 +33,8 @@ var versionCmd = &cobra.Command{
 }
 
 func versionRunner() {
-	terminal.Println(fmt.Sprintf("GOOS: %v", runtimeContext.Cli.Goos))
-	terminal.Println(fmt.Sprintf("GOARCH: %v", runtimeContext.Cli.Goarch))
+	pkgCTerminal.Println(fmt.Sprintf("GOOS: %v", runtimeContext.Cli.Goos))
+	pkgCTerminal.Println(fmt.Sprintf("GOARCH: %v", runtimeContext.Cli.Goarch))
 }
 
 func init() {

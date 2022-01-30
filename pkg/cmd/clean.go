@@ -20,8 +20,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/nitroci/nitroci-core/pkg/core/contexts"
-	"github.com/nitroci/nitroci-core/pkg/core/terminal"
+	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
+	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
+
 	"github.com/spf13/cobra"
 )
 
@@ -46,36 +47,36 @@ func cleanRunner() error {
 	if err != nil {
 		return err
 	}
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", terminal.ConvertToCyanColor(workspace.WorkspacePath))
-	terminal.Print(&terminal.TerminalOutput{
-		Messages:    []string{"Cache is going to be cleaned", currentWorkspaceTxt},
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.WorkspacePath))
+	pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
+		Messages: []string{"Cache is going to be cleaned", currentWorkspaceTxt},
 	})
-	tAction := &terminal.TerminalActionOutput{
+	tAction := &pkgCTerminal.TerminalActionOutput{
 		Step:    "Cleaning cache",
 		Outputs: []string{},
 	}
-	terminal.PrintActions(tAction)
+	pkgCTerminal.PrintActions(tAction)
 	if cleanGlobalCache {
-		cachePluginsPath := runtimeContext.Cli.Settings[contexts.CFG_NAME_CACHE_PATH]
+		cachePluginsPath := runtimeContext.Cli.Settings[pkgCContexts.CFG_NAME_CACHE_PATH]
 		err := os.RemoveAll(cachePluginsPath)
 		if err != nil {
-			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", terminal.ConvertToRedColor(cachePluginsPath)))
-			terminal.PrintActions(tAction)
+			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", pkgCTerminal.ConvertToRedColor(cachePluginsPath)))
+			pkgCTerminal.PrintActions(tAction)
 			return err
 		}
 		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", cachePluginsPath))
-		terminal.PrintActions(tAction)
+		pkgCTerminal.PrintActions(tAction)
 	}
 	if cleanLocalCache {
 		wksCachePluginsPath := filepath.Join(workspace.WorkspaceFileFolder, "cache")
 		err := os.RemoveAll(wksCachePluginsPath)
 		if err != nil {
-			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", terminal.ConvertToRedColor(wksCachePluginsPath)))
-			terminal.PrintActions(tAction)
+			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", pkgCTerminal.ConvertToRedColor(wksCachePluginsPath)))
+			pkgCTerminal.PrintActions(tAction)
 			return err
 		}
 		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", wksCachePluginsPath))
-		terminal.PrintActions(tAction)
+		pkgCTerminal.PrintActions(tAction)
 	}
 	return nil
 }

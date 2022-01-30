@@ -19,7 +19,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/nitroci/nitroci-core/pkg/core/terminal"
+	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
+
 	"github.com/spf13/cobra"
 )
 
@@ -48,7 +49,7 @@ func workspaceRunner() error {
 		if err != nil {
 			return err
 		}
-		terminal.Println(workspace.WorkspacePath)
+		pkgCTerminal.Println(workspace.WorkspacePath)
 		return nil
 	}
 	files := []string{}
@@ -59,20 +60,20 @@ func workspaceRunner() error {
 	for i, w := range workspaces {
 		files = append(files, fmt.Sprintf("%v %v", i+1, w.WorkspacePath))
 	}
-	tItems := terminal.TerminalItemsOutput{
+	tItems := pkgCTerminal.TerminalItemsOutput{
 		Messages:    []string{"Intialized workspaces:"},
 		Suggestions: []string{"(use \"nitroci <commamnd> -w <workspace-depth>...\" to switch workspace)"},
-		ItemsType:   terminal.Info,
+		ItemsType:   pkgCTerminal.Info,
 		Items:       files,
 	}
 	workspace, err := runtimeContext.GetCurrentWorkspace()
 	if err != nil {
 		return err
 	}
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", terminal.ConvertToCyanColor(workspace.WorkspacePath))
-	terminal.Print(&terminal.TerminalOutput{
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.WorkspacePath))
+	pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
 		Messages:    []string{"Workspace has been initialized", currentWorkspaceTxt},
-		ItemsOutput: []terminal.TerminalItemsOutput{tItems},
+		ItemsOutput: []pkgCTerminal.TerminalItemsOutput{tItems},
 	})
 	return nil
 }

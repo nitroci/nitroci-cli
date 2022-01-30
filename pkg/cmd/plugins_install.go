@@ -20,9 +20,10 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/nitroci/nitroci-core/pkg/core/contexts"
-	"github.com/nitroci/nitroci-core/pkg/core/registries"
-	"github.com/nitroci/nitroci-core/pkg/core/terminal"
+	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
+	pkgCRegistries "github.com/nitroci/nitroci-core/pkg/core/registries"
+	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
+
 	"github.com/spf13/cobra"
 )
 
@@ -47,52 +48,52 @@ func pluginsInstallRunner() error {
 	if err != nil {
 		return err
 	}
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", terminal.ConvertToCyanColor(workspace.WorkspacePath))
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.WorkspacePath))
 	if len(wksModel.Workspace.Plugins) == 0 {
-		terminal.Print(&terminal.TerminalOutput{
+		pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
 			Messages:    []string{"Workspace doesn't require any plugin", currentWorkspaceTxt},
-			ItemsOutput: []terminal.TerminalItemsOutput{},
+			ItemsOutput: []pkgCTerminal.TerminalItemsOutput{},
 		})
 		return nil
 	}
-	cachePluginsPath := runtimeContext.Cli.Settings[contexts.CFG_NAME_CACHE_PLUGINS_PATH]
+	cachePluginsPath := runtimeContext.Cli.Settings[pkgCContexts.CFG_NAME_CACHE_PLUGINS_PATH]
 	wksCachePluginsPath := filepath.Join(filepath.Join(workspace.WorkspaceFileFolder, "cache"), "plugins")
-	registryMap := registries.CreateRegistryMap(cachePluginsPath, wksCachePluginsPath, runtimeContext.Cli.Goos, runtimeContext.Cli.Goarch)
+	registryMap := pkgCRegistries.CreateRegistryMap(cachePluginsPath, wksCachePluginsPath, runtimeContext.Cli.Goos, runtimeContext.Cli.Goarch)
 	pluginKeys := []string{}
 	for _, plugin := range wksModel.Workspace.Plugins {
 		registryKey := plugin.Registry
 		if len(registryKey) == 0 {
-			registryKey = runtimeContext.Cli.Settings[contexts.CFG_NAME_PLUGINS_REGISTRY]
+			registryKey = runtimeContext.Cli.Settings[pkgCContexts.CFG_NAME_PLUGINS_REGISTRY]
 		}
-		pluginKeys = append(pluginKeys, registries.GetPackageName(plugin.Name, plugin.Version))
+		pluginKeys = append(pluginKeys, pkgCRegistries.GetPackageName(plugin.Name, plugin.Version))
 		err = registryMap.AddDependency(registryKey, plugin.Name, plugin.Version)
 		if err != nil {
 			return err
 		}
 	}
-	tItems := terminal.TerminalItemsOutput{
+	tItems := pkgCTerminal.TerminalItemsOutput{
 		Messages:    []string{"Configured plugins:"},
 		Suggestions: []string{},
-		ItemsType:   terminal.Info,
+		ItemsType:   pkgCTerminal.Info,
 		Items:       pluginKeys,
 	}
-	terminal.Print(&terminal.TerminalOutput{
+	pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
 		Messages:    []string{"Plugins are going to be installed", currentWorkspaceTxt},
-		ItemsOutput: []terminal.TerminalItemsOutput{tItems},
+		ItemsOutput: []pkgCTerminal.TerminalItemsOutput{tItems},
 	})
 
-	tAction := &terminal.TerminalActionOutput{
+	tAction := &pkgCTerminal.TerminalActionOutput{
 		Step:    "Downloading plugins",
 		Outputs: []string{},
 	}
-	terminal.PrintActions(tAction)
+	pkgCTerminal.PrintActions(tAction)
 	printOkFunc := func(text string) {
 		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", text))
-		terminal.PrintActions(tAction)
+		pkgCTerminal.PrintActions(tAction)
 	}
 	printKoFunc := func(text string) {
-		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", terminal.ConvertToRedColor(text)))
-		terminal.PrintActions(tAction)
+		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", pkgCTerminal.ConvertToRedColor(text)))
+		pkgCTerminal.PrintActions(tAction)
 	}
 	return registryMap.Download(printOkFunc, printKoFunc)
 }

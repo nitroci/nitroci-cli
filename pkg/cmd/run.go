@@ -22,7 +22,8 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/nitroci/nitroci-core/pkg/core/terminal"
+	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
+
 	"github.com/spf13/cobra"
 )
 
@@ -49,10 +50,10 @@ func runner(args []string) error {
 	}
 	workspaceModel, _ := workspace.CreateWorkspaceInstance()
 	if runShow {
-		currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", terminal.ConvertToCyanColor(workspace.WorkspacePath))
+		currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.WorkspacePath))
 		if len(workspaceModel.Commands) == 0 {
 			if !runRaw {
-				terminal.Print(&terminal.TerminalOutput{
+				pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
 					Messages: []string{"On workspace", currentWorkspaceTxt},
 					Output:   "Workspace doesn't implement commands to be executed.",
 				})
@@ -62,27 +63,27 @@ func runner(args []string) error {
 		if len(args) != 1 || len(args[0]) == 0 {
 			if runRaw {
 				for _, m := range workspaceModel.Commands {
-					terminal.Println(strings.ToLower(m.Name) + ": " + strings.ToLower(m.Description))
+					pkgCTerminal.Println(strings.ToLower(m.Name) + ": " + strings.ToLower(m.Description))
 				}
 			} else {
 				commands := make([]string, len(workspaceModel.Commands))
 				for i, m := range workspaceModel.Commands {
 					commands[i] = strings.ToLower(m.Name) + ": " + strings.ToLower(m.Description)
 				}
-				tItems1 := terminal.TerminalItemsOutput{
+				tItems1 := pkgCTerminal.TerminalItemsOutput{
 					Messages:    []string{"Run one of the following commands:"},
 					Suggestions: []string{"(use \"nitroci run <command>...\" to run a command using the default workspace)", "(use \"nitroci run <command> -w 1 ...\" to run a command using a specific workspace)"},
-					ItemsType:   terminal.Info,
+					ItemsType:   pkgCTerminal.Info,
 					Items:       commands,
 				}
-				terminal.Print(&terminal.TerminalOutput{
+				pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
 					Messages:    []string{"On workspace", currentWorkspaceTxt},
-					ItemsOutput: []terminal.TerminalItemsOutput{tItems1},
+					ItemsOutput: []pkgCTerminal.TerminalItemsOutput{tItems1},
 				})
 			}
 		}
 		return nil
-	} else if len(args) == 1 && len(args[0]) != 0  {
+	} else if len(args) == 1 && len(args[0]) != 0 {
 		for _, m := range workspaceModel.Commands {
 			if m.Name != (args)[0] {
 				continue

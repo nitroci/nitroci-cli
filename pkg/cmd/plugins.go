@@ -19,8 +19,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/nitroci/nitroci-core/pkg/core/terminal"
-	"github.com/nitroci/nitroci-core/pkg/core/registries"
+	pkgCRegistries "github.com/nitroci/nitroci-core/pkg/core/registries"
+	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
+
 	"github.com/spf13/cobra"
 )
 
@@ -49,10 +50,10 @@ func pluginsRunner() error {
 		return err
 	}
 	workspaceModel, _ := workspace.CreateWorkspaceInstance()
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", terminal.ConvertToCyanColor(workspace.WorkspacePath))
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.WorkspacePath))
 	if len(workspaceModel.Workspace.Plugins) == 0 {
 		if !pluginsRaw {
-			terminal.Print(&terminal.TerminalOutput{
+			pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
 				Messages: []string{"On workspace", currentWorkspaceTxt},
 				Output:   "Workspace doesn't include any plugin.",
 			})
@@ -60,26 +61,26 @@ func pluginsRunner() error {
 	} else {
 		if pluginsRaw {
 			for _, m := range workspaceModel.Workspace.Plugins {
-				terminal.Println(registries.GetPackageName(m.Name, m.Version))
+				pkgCTerminal.Println(pkgCRegistries.GetPackageName(m.Name, m.Version))
 			}
 		} else {
 			commands := make([]string, len(workspaceModel.Commands))
 			for i, m := range workspaceModel.Workspace.Plugins {
-				commands[i] = registries.GetPackageName(m.Name, m.Version)
+				commands[i] = pkgCRegistries.GetPackageName(m.Name, m.Version)
 			}
-			tItems1 := terminal.TerminalItemsOutput{
-				Messages:    []string{"Run one of the following commands:"},
+			tItems1 := pkgCTerminal.TerminalItemsOutput{
+				Messages: []string{"Run one of the following commands:"},
 				Suggestions: []string{
-					"(use \"nitroci install \" to install plugins using the default workspace)", 
+					"(use \"nitroci install \" to install plugins using the default workspace)",
 					"(use \"nitroci install -w 1 ...\" to install plugins using a specific workspace)"},
-				ItemsType:   terminal.Info,
-				Items:       commands,
+				ItemsType: pkgCTerminal.Info,
+				Items:     commands,
 			}
-			terminal.Print(&terminal.TerminalOutput{
+			pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
 				Messages:    []string{"On workspace", currentWorkspaceTxt},
-				ItemsOutput: []terminal.TerminalItemsOutput{tItems1},
+				ItemsOutput: []pkgCTerminal.TerminalItemsOutput{tItems1},
 			})
-		}		
+		}
 	}
 	return nil
 }

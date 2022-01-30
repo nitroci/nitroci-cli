@@ -21,28 +21,28 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/nitroci/nitroci-core/pkg/core/contexts"
-	"github.com/nitroci/nitroci-core/pkg/core/plugins"
+	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
+	pkgCPlugins "github.com/nitroci/nitroci-core/pkg/core/plugins"
 )
 
-func LoadPlugins(runtimeContext *contexts.RuntimeContext, pluginPath string) ([]*plugins.PluginModel, error) {
-    files, err := ioutil.ReadDir(pluginPath)
-    if err != nil {
-        return nil, err
-    }
-	pluginModels := []*plugins.PluginModel{}
+func LoadPlugins(runtimeContext *pkgCContexts.RuntimeContext, pluginPath string) ([]*pkgCPlugins.PluginModel, error) {
+	files, err := ioutil.ReadDir(pluginPath)
+	if err != nil {
+		return nil, err
+	}
+	pluginModels := []*pkgCPlugins.PluginModel{}
 	for _, fileInfo := range files {
-        if fileInfo.IsDir() {
+		if fileInfo.IsDir() {
 			filePath := filepath.Join(pluginPath, fileInfo.Name(), "manifest.yml")
 			if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) {
 				continue
 			}
-			pluginModel, err := plugins.LoadPluginFile(filePath)
+			pluginModel, err := pkgCPlugins.LoadPluginFile(filePath)
 			if err != nil {
 				return nil, err
 			}
 			pluginModels = append(pluginModels, pluginModel)
-        }
-    }
+		}
+	}
 	return pluginModels, nil
 }
