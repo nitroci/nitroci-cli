@@ -88,11 +88,11 @@ func pluginsInstallRunner() error {
 	}
 	pkgCTerminal.PrintActions(tAction)
 	printOkFunc := func(text string) {
-		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", text))
+		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", text))
 		pkgCTerminal.PrintActions(tAction)
 	}
 	printKoFunc := func(text string) {
-		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", pkgCTerminal.ConvertToRedColor(text)))
+		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", pkgCTerminal.ConvertToRedColor(text)))
 		pkgCTerminal.PrintActions(tAction)
 	}
 	return registryMap.Download(printOkFunc, printKoFunc)

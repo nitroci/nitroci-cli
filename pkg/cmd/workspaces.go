@@ -57,6 +57,9 @@ func workspaceRunner() error {
 	if err != nil {
 		return err
 	}
+	if len(workspaces) == 0 {
+		return errors.New("please initialize a workspace.")
+	}
 	for i, w := range workspaces {
 		files = append(files, fmt.Sprintf("%v %v", i+1, w.WorkspacePath))
 	}

@@ -21,6 +21,7 @@ import (
 
 	pkgCPlugins "github.com/nitroci/nitroci-cli/pkg/plugins"
 	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
+	pkgCOs "github.com/nitroci/nitroci-core/pkg/core/extensions/os"
 	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
 
 	"github.com/spf13/cobra"
@@ -43,11 +44,10 @@ and it is not tied to a particolar language or farmework.`,
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	rootCmd.SilenceErrors = true
-	rootCmd.SilenceUsage = true
+	rootCmd.SilenceErrors = false
+	rootCmd.SilenceUsage = false
 	err := rootCmd.Execute()
 	if err != nil {
-		pkgCTerminal.Println(pkgCTerminal.ConvertToRedColor(err.Error()))
 		os.Exit(1)
 	}
 }
@@ -59,7 +59,6 @@ func initRoot() {
 	var err error
 	runtimeContext, err = pkgCContexts.LoadRuntimeContext(profile, "", workspaceDepth-1, verbose)
 	if err != nil {
-		pkgCTerminal.Println(pkgCTerminal.ConvertToRedColor(err.Error()))
 		os.Exit(1)
 	}
 	workspace, err := runtimeContext.GetCurrentWorkspace()
@@ -68,12 +67,12 @@ func initRoot() {
 		os.Exit(1)
 	}
 	pluginPath := filepath.Join(filepath.Join(workspace.WorkspaceFileFolder, "cache"), "plugins")
-	pluginModels, err := pkgCPlugins.LoadPlugins(runtimeContext, pluginPath)
+	pkgCOs.Mkdir(pluginPath)
+	_, err = pkgCPlugins.LoadPlugins(runtimeContext, pluginPath)
 	if err != nil {
 		pkgCTerminal.Println(pkgCTerminal.ConvertToRedColor(err.Error()))
 		os.Exit(1)
 	}
-	pkgCTerminal.Println(len(pluginModels))
 }
 
 func init() {

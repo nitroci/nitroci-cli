@@ -60,22 +60,22 @@ func cleanRunner() error {
 		cachePluginsPath := runtimeContext.Cli.Settings[pkgCContexts.CFG_NAME_CACHE_PATH]
 		err := os.RemoveAll(cachePluginsPath)
 		if err != nil {
-			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", pkgCTerminal.ConvertToRedColor(cachePluginsPath)))
+			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", pkgCTerminal.ConvertToRedColor(cachePluginsPath)))
 			pkgCTerminal.PrintActions(tAction)
 			return err
 		}
-		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", cachePluginsPath))
+		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", cachePluginsPath))
 		pkgCTerminal.PrintActions(tAction)
 	}
 	if cleanLocalCache {
 		wksCachePluginsPath := filepath.Join(workspace.WorkspaceFileFolder, "cache")
 		err := os.RemoveAll(wksCachePluginsPath)
 		if err != nil {
-			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", pkgCTerminal.ConvertToRedColor(wksCachePluginsPath)))
+			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", pkgCTerminal.ConvertToRedColor(wksCachePluginsPath)))
 			pkgCTerminal.PrintActions(tAction)
 			return err
 		}
-		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("❯ %v", wksCachePluginsPath))
+		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", wksCachePluginsPath))
 		pkgCTerminal.PrintActions(tAction)
 	}
 	return nil
