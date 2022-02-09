@@ -16,6 +16,9 @@ limitations under the License.
 package cmd
 
 import (
+	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
+	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
+
 	"github.com/spf13/cobra"
 )
 
@@ -24,8 +27,16 @@ var iniCmd = &cobra.Command{
 	Short: "Generate resources for the workspace",
 	Long:  `Generate resources for the workspace`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return nil
+		runtimeCtx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACELESS_TYPE)
+		if err != nil {
+			return err
+		}
+		return initRunner(runtimeCtx)
 	},
+}
+
+func initRunner(runtimeCtx pkgCContexts.RuntimeContexter) error {
+	return nil
 }
 
 func init() {

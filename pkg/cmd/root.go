@@ -17,17 +17,15 @@ package cmd
 
 import (
 	"os"
-	"path/filepath"
+	//"path/filepath"
 
-	pkgCPlugins "github.com/nitroci/nitroci-cli/pkg/plugins"
-	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
-	pkgCOs "github.com/nitroci/nitroci-core/pkg/core/extensions/os"
-	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
+	//pkgCPlugins "github.com/nitroci/nitroci-cli/pkg/plugins"
+	//pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
+	//pkgCOs "github.com/nitroci/nitroci-core/pkg/core/extensions/os"
+	//pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
 
 	"github.com/spf13/cobra"
 )
-
-var runtimeContext *pkgCContexts.RuntimeContext
 
 var rootCmd = &cobra.Command{
 	Use:   "nitroci",
@@ -53,6 +51,7 @@ func Execute() {
 }
 
 func initRoot() {
+	/*
 	profile, _ := rootCmd.PersistentFlags().GetString("profile")
 	verbose, _ := rootCmd.PersistentFlags().GetBool("verbose")
 	workspaceDepth, _ := rootCmd.PersistentFlags().GetInt("workspace")
@@ -73,6 +72,7 @@ func initRoot() {
 		pkgCTerminal.Println(pkgCTerminal.ConvertToRedColor(err.Error()))
 		os.Exit(1)
 	}
+	*/
 }
 
 func init() {

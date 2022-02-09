@@ -16,10 +16,10 @@ limitations under the License.
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"path/filepath"
 
+	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
 	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
 	pkgCRegistries "github.com/nitroci/nitroci-core/pkg/core/registries"
 	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
@@ -32,15 +32,13 @@ var installWorkspaceCmd = &cobra.Command{
 	Short: "Install plugins",
 	Long:  `Install plugins`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if !runtimeContext.HasWorkspaces() {
-			return errors.New("workspace is not initialized")
-		}
-		return pluginsInstallRunner()
+		runtimeCtx, _ := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		return pluginsInstallRunner(runtimeCtx)
 	},
 }
 
-func pluginsInstallRunner() error {
-	workspace, err := runtimeContext.GetCurrentWorkspace()
+func pluginsInstallRunner(runtimeCtx pkgCContexts.RuntimeContexter) error {
+	workspace, err := runtimeCtx.GetCurrentWorkspace()
 	if err != nil {
 		return err
 	}
@@ -48,7 +46,7 @@ func pluginsInstallRunner() error {
 	if err != nil {
 		return err
 	}
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.WorkspacePath))
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.GetWorkspacePath()))
 	if len(wksModel.Workspace.Plugins) == 0 {
 		pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
 			Messages:    []string{"Workspace doesn't require any plugin", currentWorkspaceTxt},
@@ -56,14 +54,14 @@ func pluginsInstallRunner() error {
 		})
 		return nil
 	}
-	cachePluginsPath := runtimeContext.Cli.Settings[pkgCContexts.CFG_NAME_CACHE_PLUGINS_PATH]
-	wksCachePluginsPath := filepath.Join(filepath.Join(workspace.WorkspaceFileFolder, "cache"), "plugins")
-	registryMap := pkgCRegistries.CreateRegistryMap(cachePluginsPath, wksCachePluginsPath, runtimeContext.Cli.Goos, runtimeContext.Cli.Goarch)
+	cachePluginsPath, _ := runtimeCtx.GetSettings(pkgCContexts.CFG_NAME_CACHE_PLUGINS_PATH)
+	wksCachePluginsPath := filepath.Join(filepath.Join(workspace.GetWorkspaceFileFolder(), "cache"), "plugins")
+	registryMap := pkgCRegistries.CreateRegistryMap(cachePluginsPath, wksCachePluginsPath, runtimeCtx.GetGoos(), runtimeCtx.GetGoarch())
 	pluginKeys := []string{}
 	for _, plugin := range wksModel.Workspace.Plugins {
 		registryKey := plugin.Registry
 		if len(registryKey) == 0 {
-			registryKey = runtimeContext.Cli.Settings[pkgCContexts.CFG_NAME_PLUGINS_REGISTRY]
+			registryKey, _ = runtimeCtx.GetSettings(pkgCContexts.CFG_NAME_PLUGINS_REGISTRY)
 		}
 		pluginKeys = append(pluginKeys, pkgCRegistries.GetPackageName(plugin.Name, plugin.Version))
 		err = registryMap.AddDependency(registryKey, plugin.Name, plugin.Version)

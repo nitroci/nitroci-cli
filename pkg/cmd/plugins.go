@@ -16,9 +16,10 @@ limitations under the License.
 package cmd
 
 import (
-	"errors"
 	"fmt"
 
+	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
+	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
 	pkgCRegistries "github.com/nitroci/nitroci-core/pkg/core/registries"
 	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
 
@@ -34,23 +35,21 @@ var pluginsCmd = &cobra.Command{
 	Short: "Plugins managament",
 	Long:  `Plugins management`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if !runtimeContext.HasWorkspaces() {
-			return errors.New("workspace is not initialized")
-		}
-		return pluginsRunner()
+		runtimeCtx, _ := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		return pluginsRunner(runtimeCtx)
 	},
 }
 
-func pluginsRunner() error {
+func pluginsRunner(runtimeCtx pkgCContexts.RuntimeContexter) error {
 	if !pluginsShow {
 		return nil
 	}
-	workspace, err := runtimeContext.GetCurrentWorkspace()
+	workspace, err := runtimeCtx.GetCurrentWorkspace()
 	if err != nil {
 		return err
 	}
 	workspaceModel, _ := workspace.CreateWorkspaceInstance()
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.WorkspacePath))
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.GetWorkspacePath()))
 	if len(workspaceModel.Workspace.Plugins) == 0 {
 		if !pluginsRaw {
 			pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{

@@ -19,6 +19,8 @@ import (
 	"errors"
 	"fmt"
 
+	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
+	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
 	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
 
 	"github.com/spf13/cobra"
@@ -33,27 +35,25 @@ var workspacesCmd = &cobra.Command{
 	Short: "List and interact with configured workspaces",
 	Long:  `List and interact with configured workspaces`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if !runtimeContext.HasWorkspaces() {
-			return errors.New("workspace is not initialized")
-		}
-		return workspaceRunner()
+		runtimeCtx, _ := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		return workspaceRunner(runtimeCtx)
 	},
 }
 
-func workspaceRunner() error {
+func workspaceRunner(runtimeCtx pkgCContexts.RuntimeContexter) error {
 	if !workspaceShow {
 		return nil
 	}
 	if workspaceRaw {
-		workspace, err := runtimeContext.GetCurrentWorkspace()
+		workspace, err := runtimeCtx.GetCurrentWorkspace()
 		if err != nil {
 			return err
 		}
-		pkgCTerminal.Println(workspace.WorkspacePath)
+		pkgCTerminal.Println(workspace.GetWorkspacePath())
 		return nil
 	}
 	files := []string{}
-	workspaces, err := runtimeContext.GetWorkspaces()
+	workspaces, err := runtimeCtx.GetWorkspaces()
 	if err != nil {
 		return err
 	}
@@ -61,7 +61,7 @@ func workspaceRunner() error {
 		return errors.New("please initialize a workspace.")
 	}
 	for i, w := range workspaces {
-		files = append(files, fmt.Sprintf("%v %v", i+1, w.WorkspacePath))
+		files = append(files, fmt.Sprintf("%v %v", i+1, w.GetWorkspacePath()))
 	}
 	tItems := pkgCTerminal.TerminalItemsOutput{
 		Messages:    []string{"Intialized workspaces:"},
@@ -69,11 +69,11 @@ func workspaceRunner() error {
 		ItemsType:   pkgCTerminal.Info,
 		Items:       files,
 	}
-	workspace, err := runtimeContext.GetCurrentWorkspace()
+	workspace, err := runtimeCtx.GetCurrentWorkspace()
 	if err != nil {
 		return err
 	}
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.WorkspacePath))
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.GetWorkspacePath()))
 	pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
 		Messages:    []string{"Workspace has been initialized", currentWorkspaceTxt},
 		ItemsOutput: []pkgCTerminal.TerminalItemsOutput{tItems},

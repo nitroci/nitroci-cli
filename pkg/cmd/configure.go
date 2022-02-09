@@ -18,6 +18,7 @@ package cmd
 import (
 	"fmt"
 
+	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
 	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
 	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
 
@@ -33,15 +34,19 @@ var configureCmd = &cobra.Command{
 	Short: "Show or modify configurations",
 	Long:  `Show or modify configurations`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return configurationRunner()
+		runtimeCtx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACELESS_TYPE)
+		if err != nil {
+			return err
+		}
+		return configurationRunner(runtimeCtx)
 	},
 }
 
-func configurationRunner() error {
+func configurationRunner(runtimeCtx pkgCContexts.RuntimeContexter) error {
 	if !configureShow {
 		return nil
 	}
-	globalConfig := runtimeContext.Cli.Settings[pkgCContexts.CFG_NAME_CONFIG_PATH]
+	globalConfig, _ := runtimeCtx.GetSettings(pkgCContexts.CFG_NAME_CONFIG_PATH)
 	if configureRaw {
 		if len(globalConfig) > 0 {
 			pkgCTerminal.Println(globalConfig)

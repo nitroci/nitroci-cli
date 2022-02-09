@@ -20,6 +20,7 @@ import (
 	"os"
 	"path/filepath"
 
+	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
 	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
 	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
 
@@ -35,19 +36,23 @@ var cleanCmd = &cobra.Command{
 	Short: "Remove object files and cached files",
 	Long:  `Remove object files and cached files`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return cleanRunner()
+		runtimeCtx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		if err != nil {
+			return err
+		}
+		return cleanRunner(runtimeCtx)
 	},
 }
 
-func cleanRunner() error {
+func cleanRunner(runtimeCtx pkgCContexts.RuntimeContexter) error {
 	if !cleanGlobalCache && !cleanLocalCache {
 		return nil
 	}
-	workspace, err := runtimeContext.GetCurrentWorkspace()
+	workspace, err := runtimeCtx.GetCurrentWorkspace()
 	if err != nil {
 		return err
 	}
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.WorkspacePath))
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.GetWorkspacePath()))
 	pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
 		Messages: []string{"Cache is going to be cleaned", currentWorkspaceTxt},
 	})
@@ -57,7 +62,7 @@ func cleanRunner() error {
 	}
 	pkgCTerminal.PrintActions(tAction)
 	if cleanGlobalCache {
-		cachePluginsPath := runtimeContext.Cli.Settings[pkgCContexts.CFG_NAME_CACHE_PATH]
+		cachePluginsPath, _ := runtimeCtx.GetSettings(pkgCContexts.CFG_NAME_CACHE_PATH)
 		err := os.RemoveAll(cachePluginsPath)
 		if err != nil {
 			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", pkgCTerminal.ConvertToRedColor(cachePluginsPath)))
@@ -68,7 +73,7 @@ func cleanRunner() error {
 		pkgCTerminal.PrintActions(tAction)
 	}
 	if cleanLocalCache {
-		wksCachePluginsPath := filepath.Join(workspace.WorkspaceFileFolder, "cache")
+		wksCachePluginsPath := filepath.Join(workspace.GetWorkspaceFileFolder(), "cache")
 		err := os.RemoveAll(wksCachePluginsPath)
 		if err != nil {
 			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", pkgCTerminal.ConvertToRedColor(wksCachePluginsPath)))

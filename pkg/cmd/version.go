@@ -18,6 +18,8 @@ package cmd
 import (
 	"fmt"
 
+	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
+	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
 	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
 
 	"github.com/spf13/cobra"
@@ -27,14 +29,16 @@ var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Cli version",
 	Long:  `Cli version`,
-	Run: func(cmd *cobra.Command, args []string) {
-		versionRunner()
+	RunE: func(cmd *cobra.Command, args []string) error {
+		runtimeCtx, _ := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		return versionRunner(runtimeCtx)
 	},
 }
 
-func versionRunner() {
-	pkgCTerminal.Println(fmt.Sprintf("GOOS: %v", runtimeContext.Cli.Goos))
-	pkgCTerminal.Println(fmt.Sprintf("GOARCH: %v", runtimeContext.Cli.Goarch))
+func versionRunner(runtimeCtx pkgCContexts.RuntimeContexter) error {
+	pkgCTerminal.Println(fmt.Sprintf("GOOS: %v", runtimeCtx.GetGoos()))
+	pkgCTerminal.Println(fmt.Sprintf("GOARCH: %v", runtimeCtx.GetGoarch()))
+	return nil
 }
 
 func init() {

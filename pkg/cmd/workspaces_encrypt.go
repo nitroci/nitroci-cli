@@ -16,8 +16,8 @@ limitations under the License.
 package cmd
 
 import (
-	"errors"
-
+	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
+	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
 	"github.com/spf13/cobra"
 )
 
@@ -26,11 +26,13 @@ var encryptWorkspaceCmd = &cobra.Command{
 	Short: "Encrypt workspace files",
 	Long:  `Encrypt workspace files`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if !runtimeContext.HasWorkspaces() {
-			return errors.New("workspace is not initialized")
-		}
-		return nil
+		runtimeCtx, _ := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		return encryptRunner(runtimeCtx)
 	},
+}
+
+func encryptRunner(runtimeCtx pkgCContexts.RuntimeContexter) error {
+	return nil
 }
 
 func init() {

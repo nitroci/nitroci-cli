@@ -16,7 +16,8 @@ limitations under the License.
 package cmd
 
 import (
-	"errors"
+	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
+	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
 
 	"github.com/spf13/cobra"
 )
@@ -26,11 +27,13 @@ var pipelinesCmd = &cobra.Command{
 	Short: "List and interact with configured pipelines",
 	Long:  `List and interact with configured pipelines`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if !runtimeContext.HasWorkspaces() {
-			return errors.New("workspace is not initialized")
-		}
-		return nil
+		runtimeCtx, _ := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		return pipelinesRunner(runtimeCtx)
 	},
+}
+
+func pipelinesRunner(runtimeCtx pkgCContexts.RuntimeContexter) error {
+	return nil
 }
 
 func init() {

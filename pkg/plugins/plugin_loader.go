@@ -25,7 +25,7 @@ import (
 	pkgCPlugins "github.com/nitroci/nitroci-core/pkg/core/plugins"
 )
 
-func LoadPlugins(runtimeContext *pkgCContexts.RuntimeContext, pluginPath string) ([]*pkgCPlugins.PluginModel, error) {
+func LoadPlugins(runtimeContext *pkgCContexts.RuntimeContexter, pluginPath string) ([]*pkgCPlugins.PluginModel, error) {
 	files, err := ioutil.ReadDir(pluginPath)
 	if err != nil {
 		return nil, err

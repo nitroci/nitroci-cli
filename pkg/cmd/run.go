@@ -22,6 +22,8 @@ import (
 	"os/exec"
 	"strings"
 
+	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
+	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
 	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
 
 	"github.com/spf13/cobra"
@@ -36,21 +38,19 @@ var runCmd = &cobra.Command{
 	Short: "Run workspace commands",
 	Long:  `Run workspace commands`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if !runtimeContext.HasWorkspaces() {
-			return errors.New("workspace is not initialized")
-		}
-		return runner(args)
+		runtimeCtx, _ := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		return runner(runtimeCtx, args)
 	},
 }
 
-func runner(args []string) error {
-	workspace, err := runtimeContext.GetCurrentWorkspace()
+func runner(runtimeCtx pkgCContexts.RuntimeContexter, args []string) error {
+	workspace, err := runtimeCtx.GetCurrentWorkspace()
 	if err != nil {
 		return err
 	}
 	workspaceModel, _ := workspace.CreateWorkspaceInstance()
 	if runShow {
-		currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.WorkspacePath))
+		currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.GetWorkspacePath()))
 		if len(workspaceModel.Commands) == 0 {
 			if !runRaw {
 				pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
