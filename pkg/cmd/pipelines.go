@@ -27,7 +27,10 @@ var pipelinesCmd = &cobra.Command{
 	Short: "List and interact with configured pipelines",
 	Long:  `List and interact with configured pipelines`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		runtimeCtx, _ := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		runtimeCtx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		if err != nil {
+			return err
+		}
 		return pipelinesRunner(runtimeCtx)
 	},
 }

@@ -32,7 +32,10 @@ var installWorkspaceCmd = &cobra.Command{
 	Short: "Install plugins",
 	Long:  `Install plugins`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		runtimeCtx, _ := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		runtimeCtx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		if err != nil {
+			return err
+		}
 		return pluginsInstallRunner(runtimeCtx)
 	},
 }

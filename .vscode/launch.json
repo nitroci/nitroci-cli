@@ -12,10 +12,7 @@
             "program": "./main.go",
             "args": [
                 "workspaces",
-                "-w",
-                "100",
-                "--show",
-                "--raw"
+                "-s",
             ],
             "env": {}
         },
