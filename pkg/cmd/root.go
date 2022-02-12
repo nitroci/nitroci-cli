@@ -17,12 +17,6 @@ package cmd
 
 import (
 	"os"
-	//"path/filepath"
-
-	//pkgCPlugins "github.com/nitroci/nitroci-cli/pkg/plugins"
-	//pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
-	//pkgCOs "github.com/nitroci/nitroci-core/pkg/core/extensions/os"
-	//pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
 
 	"github.com/spf13/cobra"
 )
@@ -50,33 +44,7 @@ func Execute() {
 	}
 }
 
-func initRoot() {
-	/*
-	profile, _ := rootCmd.PersistentFlags().GetString("profile")
-	verbose, _ := rootCmd.PersistentFlags().GetBool("verbose")
-	workspaceDepth, _ := rootCmd.PersistentFlags().GetInt("workspace")
-	var err error
-	runtimeContext, err = pkgCContexts.LoadRuntimeContext(profile, "", workspaceDepth-1, verbose)
-	if err != nil {
-		os.Exit(1)
-	}
-	workspace, err := runtimeContext.GetCurrentWorkspace()
-	if err != nil {
-		pkgCTerminal.Println(pkgCTerminal.ConvertToRedColor(err.Error()))
-		os.Exit(1)
-	}
-	pluginPath := filepath.Join(filepath.Join(workspace.WorkspaceFileFolder, "cache"), "plugins")
-	pkgCOs.Mkdir(pluginPath)
-	_, err = pkgCPlugins.LoadPlugins(runtimeContext, pluginPath)
-	if err != nil {
-		pkgCTerminal.Println(pkgCTerminal.ConvertToRedColor(err.Error()))
-		os.Exit(1)
-	}
-	*/
-}
-
 func init() {
-	cobra.OnInitialize(initRoot)
 	rootCmd.PersistentFlags().StringP("profile", "p", "default", "set a specific profile")
 	rootCmd.PersistentFlags().IntP("workspace", "w", 1, "set current workspace")
 	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "output verbose output")
