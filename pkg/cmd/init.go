@@ -17,7 +17,7 @@ package cmd
 
 import (
 	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
-	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
+	pkgCCtx "github.com/nitroci/nitroci-core/pkg/core/contexts"
 
 	"github.com/spf13/cobra"
 )
@@ -27,7 +27,7 @@ var iniCmd = &cobra.Command{
 	Short: "Generate resources for the workspace",
 	Long:  `Generate resources for the workspace`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACELESS_TYPE)
+		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCCtx.CORE_BUILDER_WORKSPACELESS_TYPE, ctxInput)
 		if err != nil {
 			return err
 		}
@@ -35,7 +35,7 @@ var iniCmd = &cobra.Command{
 	},
 }
 
-func initRunner(ctx pkgCContexts.CoreContexter) error {
+func initRunner(ctx pkgCCtx.CoreContexter) error {
 	return nil
 }
 

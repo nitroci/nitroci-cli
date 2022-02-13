@@ -20,7 +20,7 @@ import (
 	"fmt"
 
 	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
-	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
+	pkgCCtx "github.com/nitroci/nitroci-core/pkg/core/contexts"
 	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
 
 	"github.com/spf13/cobra"
@@ -35,7 +35,7 @@ var workspacesCmd = &cobra.Command{
 	Short: "List and interact with configured workspaces",
 	Long:  `List and interact with configured workspaces`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCCtx.CORE_BUILDER_WORKSPACE_TYPE, ctxInput)
 		if err != nil {
 			return err
 		}
@@ -43,7 +43,7 @@ var workspacesCmd = &cobra.Command{
 	},
 }
 
-func workspaceRunner(ctx pkgCContexts.CoreContexter) error {
+func workspaceRunner(ctx pkgCCtx.CoreContexter) error {
 	if !workspaceShow {
 		return nil
 	}

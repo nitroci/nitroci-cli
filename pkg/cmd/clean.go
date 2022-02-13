@@ -21,7 +21,7 @@ import (
 	"path/filepath"
 
 	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
-	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
+	pkgCCtx "github.com/nitroci/nitroci-core/pkg/core/contexts"
 	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
 
 	"github.com/spf13/cobra"
@@ -36,7 +36,7 @@ var cleanCmd = &cobra.Command{
 	Short: "Remove object files and cached files",
 	Long:  `Remove object files and cached files`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCCtx.CORE_BUILDER_WORKSPACE_TYPE, ctxInput)
 		if err != nil {
 			return err
 		}
@@ -44,7 +44,7 @@ var cleanCmd = &cobra.Command{
 	},
 }
 
-func cleanRunner(ctx pkgCContexts.CoreContexter) error {
+func cleanRunner(ctx pkgCCtx.CoreContexter) error {
 	if !cleanGlobalCache && !cleanLocalCache {
 		return nil
 	}
@@ -63,7 +63,7 @@ func cleanRunner(ctx pkgCContexts.CoreContexter) error {
 	}
 	pkgCTerminal.PrintActions(tAction)
 	if cleanGlobalCache {
-		cachePluginsPath, _ := runtimeCtx.GetSettings(pkgCContexts.CFG_NAME_CACHE_PATH)
+		cachePluginsPath, _ := runtimeCtx.GetSettings(pkgCCtx.CFG_NAME_CACHE_PATH)
 		err := os.RemoveAll(cachePluginsPath)
 		if err != nil {
 			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", pkgCTerminal.ConvertToRedColor(cachePluginsPath)))

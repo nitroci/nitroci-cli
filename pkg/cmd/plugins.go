@@ -19,7 +19,7 @@ import (
 	"fmt"
 
 	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
-	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
+	pkgCCtx "github.com/nitroci/nitroci-core/pkg/core/contexts"
 	pkgCRegistries "github.com/nitroci/nitroci-core/pkg/core/registries"
 	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
 
@@ -35,7 +35,7 @@ var pluginsCmd = &cobra.Command{
 	Short: "Plugins managament",
 	Long:  `Plugins management`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCCtx.CORE_BUILDER_WORKSPACE_TYPE, ctxInput)
 		if err != nil {
 			return err
 		}
@@ -43,7 +43,7 @@ var pluginsCmd = &cobra.Command{
 	},
 }
 
-func pluginsRunner(ctx pkgCContexts.CoreContexter) error {
+func pluginsRunner(ctx pkgCCtx.CoreContexter) error {
 	if !pluginsShow {
 		return nil
 	}

@@ -17,7 +17,7 @@ package cmd
 
 import (
 	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
-	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
+	pkgCCtx "github.com/nitroci/nitroci-core/pkg/core/contexts"
 	"github.com/spf13/cobra"
 )
 
@@ -26,7 +26,7 @@ var encryptWorkspaceCmd = &cobra.Command{
 	Short: "Encrypt workspace files",
 	Long:  `Encrypt workspace files`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCCtx.CORE_BUILDER_WORKSPACE_TYPE, ctxInput)
 		if err != nil {
 			return err
 		}
@@ -34,7 +34,7 @@ var encryptWorkspaceCmd = &cobra.Command{
 	},
 }
 
-func encryptRunner(ctx pkgCContexts.CoreContexter) error {
+func encryptRunner(ctx pkgCCtx.CoreContexter) error {
 	return nil
 }
 

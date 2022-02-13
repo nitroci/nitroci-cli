@@ -17,7 +17,7 @@ package cmd
 
 import (
 	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
-	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
+	pkgCCtx "github.com/nitroci/nitroci-core/pkg/core/contexts"
 
 	"github.com/spf13/cobra"
 )
@@ -27,7 +27,7 @@ var pipelinesCmd = &cobra.Command{
 	Short: "List and interact with configured pipelines",
 	Long:  `List and interact with configured pipelines`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCCtx.CORE_BUILDER_WORKSPACE_TYPE, ctxInput)
 		if err != nil {
 			return err
 		}
@@ -35,7 +35,7 @@ var pipelinesCmd = &cobra.Command{
 	},
 }
 
-func pipelinesRunner(ctx pkgCContexts.CoreContexter) error {
+func pipelinesRunner(ctx pkgCCtx.CoreContexter) error {
 	return nil
 }
 

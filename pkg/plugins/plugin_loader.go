@@ -21,11 +21,11 @@ import (
 	"os"
 	"path/filepath"
 
-	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
+	pkgCCtx "github.com/nitroci/nitroci-core/pkg/core/contexts"
 	pkgCPlugins "github.com/nitroci/nitroci-core/pkg/core/plugins"
 )
 
-func LoadPlugins(runtimeContext *pkgCContexts.RuntimeContexter, pluginPath string) ([]*pkgCPlugins.PluginModel, error) {
+func LoadPlugins(runtimeContext *pkgCCtx.RuntimeContexter, pluginPath string) ([]*pkgCPlugins.PluginModel, error) {
 	files, err := ioutil.ReadDir(pluginPath)
 	if err != nil {
 		return nil, err

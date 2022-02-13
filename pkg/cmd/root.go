@@ -18,8 +18,11 @@ package cmd
 import (
 	"os"
 
+	pkgCCtx "github.com/nitroci/nitroci-core/pkg/core/contexts"
 	"github.com/spf13/cobra"
 )
+
+var ctxInput pkgCCtx.CoreContextBuilderInput
 
 var rootCmd = &cobra.Command{
 	Use:   "nitroci",
@@ -44,7 +47,22 @@ func Execute() {
 	}
 }
 
+func rootOnInitialize() {
+	path, _ := os.Getwd()
+	profile, _ := rootCmd.PersistentFlags().GetString("profile")
+	workspace, _ := rootCmd.PersistentFlags().GetInt("workspace")
+	verbose, _ := rootCmd.PersistentFlags().GetBool("verbose")
+	ctxInput = pkgCCtx.CoreContextBuilderInput{
+		WorkingDirectory: path,
+		Profile:          profile,
+		Environment:      "",
+		WorkspaceDepth:   workspace,
+		Verbose:          verbose,
+	}
+}
+
 func init() {
+	cobra.OnInitialize(rootOnInitialize)
 	rootCmd.PersistentFlags().StringP("profile", "p", "default", "set a specific profile")
 	rootCmd.PersistentFlags().IntP("workspace", "w", 1, "set current workspace")
 	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "output verbose output")

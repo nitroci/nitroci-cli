@@ -20,7 +20,7 @@ import (
 	"path/filepath"
 
 	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
-	pkgCContexts "github.com/nitroci/nitroci-core/pkg/core/contexts"
+	pkgCCtx "github.com/nitroci/nitroci-core/pkg/core/contexts"
 	pkgCRegistries "github.com/nitroci/nitroci-core/pkg/core/registries"
 	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
 
@@ -32,7 +32,7 @@ var installWorkspaceCmd = &cobra.Command{
 	Short: "Install plugins",
 	Long:  `Install plugins`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCCtx.CORE_BUILDER_WORKSPACE_TYPE, ctxInput)
 		if err != nil {
 			return err
 		}
@@ -40,7 +40,7 @@ var installWorkspaceCmd = &cobra.Command{
 	},
 }
 
-func pluginsInstallRunner(ctx pkgCContexts.CoreContexter) error {
+func pluginsInstallRunner(ctx pkgCCtx.CoreContexter) error {
 	runtimeCtx := ctx.GetRuntimeCtx()
 	workspace, err := runtimeCtx.GetCurrentWorkspace()
 	if err != nil {
@@ -58,14 +58,14 @@ func pluginsInstallRunner(ctx pkgCContexts.CoreContexter) error {
 		})
 		return nil
 	}
-	cachePluginsPath, _ := runtimeCtx.GetSettings(pkgCContexts.CFG_NAME_CACHE_PLUGINS_PATH)
+	cachePluginsPath, _ := runtimeCtx.GetSettings(pkgCCtx.CFG_NAME_CACHE_PLUGINS_PATH)
 	wksCachePluginsPath := filepath.Join(filepath.Join(workspace.GetWorkspaceFileFolder(), "cache"), "plugins")
 	registryMap := pkgCRegistries.CreateRegistryMap(cachePluginsPath, wksCachePluginsPath, runtimeCtx.GetGoos(), runtimeCtx.GetGoarch())
 	pluginKeys := []string{}
 	for _, plugin := range wksModel.Workspace.Plugins {
 		registryKey := plugin.Registry
 		if len(registryKey) == 0 {
-			registryKey, _ = runtimeCtx.GetSettings(pkgCContexts.CFG_NAME_PLUGINS_REGISTRY)
+			registryKey, _ = runtimeCtx.GetSettings(pkgCCtx.CFG_NAME_PLUGINS_REGISTRY)
 		}
 		pluginKeys = append(pluginKeys, pkgCRegistries.GetPackageName(plugin.Name, plugin.Version))
 		err = registryMap.AddDependency(registryKey, plugin.Name, plugin.Version)
