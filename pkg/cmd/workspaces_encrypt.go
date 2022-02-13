@@ -26,15 +26,15 @@ var encryptWorkspaceCmd = &cobra.Command{
 	Short: "Encrypt workspace files",
 	Long:  `Encrypt workspace files`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		runtimeCtx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
 		if err != nil {
 			return err
 		}
-		return encryptRunner(runtimeCtx)
+		return encryptRunner(ctx)
 	},
 }
 
-func encryptRunner(runtimeCtx pkgCContexts.RuntimeContexter) error {
+func encryptRunner(ctx pkgCContexts.CoreContexter) error {
 	return nil
 }
 

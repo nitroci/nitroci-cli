@@ -27,15 +27,15 @@ var iniCmd = &cobra.Command{
 	Short: "Generate resources for the workspace",
 	Long:  `Generate resources for the workspace`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		runtimeCtx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACELESS_TYPE)
+		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACELESS_TYPE)
 		if err != nil {
 			return err
 		}
-		return initRunner(runtimeCtx)
+		return initRunner(ctx)
 	},
 }
 
-func initRunner(runtimeCtx pkgCContexts.RuntimeContexter) error {
+func initRunner(ctx pkgCContexts.CoreContexter) error {
 	return nil
 }
 

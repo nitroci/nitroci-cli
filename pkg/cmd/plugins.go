@@ -35,18 +35,19 @@ var pluginsCmd = &cobra.Command{
 	Short: "Plugins managament",
 	Long:  `Plugins management`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		runtimeCtx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
+		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACE_TYPE)
 		if err != nil {
 			return err
 		}
-		return pluginsRunner(runtimeCtx)
+		return pluginsRunner(ctx)
 	},
 }
 
-func pluginsRunner(runtimeCtx pkgCContexts.RuntimeContexter) error {
+func pluginsRunner(ctx pkgCContexts.CoreContexter) error {
 	if !pluginsShow {
 		return nil
 	}
+	runtimeCtx := ctx.GetRuntimeCtx()
 	workspace, err := runtimeCtx.GetCurrentWorkspace()
 	if err != nil {
 		return err

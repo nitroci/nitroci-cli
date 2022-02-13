@@ -30,15 +30,16 @@ var versionCmd = &cobra.Command{
 	Short: "Cli version",
 	Long:  `Cli version`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		runtimeCtx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACELESS_TYPE)
+		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCContexts.CORE_BUILDER_WORKSPACELESS_TYPE)
 		if err != nil {
 			return err
 		}
-		return versionRunner(runtimeCtx)
+		return versionRunner(ctx)
 	},
 }
 
-func versionRunner(runtimeCtx pkgCContexts.RuntimeContexter) error {
+func versionRunner(ctx pkgCContexts.CoreContexter) error {
+	runtimeCtx := ctx.GetRuntimeCtx()
 	pkgCTerminal.Println(fmt.Sprintf("GOOS: %v", runtimeCtx.GetGoos()))
 	pkgCTerminal.Println(fmt.Sprintf("GOARCH: %v", runtimeCtx.GetGoarch()))
 	return nil
