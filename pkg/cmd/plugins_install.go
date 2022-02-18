@@ -32,7 +32,7 @@ var installWorkspaceCmd = &cobra.Command{
 	Short: "Install plugins",
 	Long:  `Install plugins`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCCtx.CORE_BUILDER_WORKSPACE_TYPE, ctxInput)
+		ctx, err := pkgCCore.CreateAndInitalizeWorspaceContext(ctxInput)
 		if err != nil {
 			return err
 		}
@@ -58,14 +58,14 @@ func pluginsInstallRunner(ctx pkgCCtx.CoreContexter) error {
 		})
 		return nil
 	}
-	cachePluginsPath, _ := runtimeCtx.GetSettings(pkgCCtx.CFG_NAME_CACHE_PLUGINS_PATH)
+	cachePluginsPath, _ := runtimeCtx.GetSettings(CFG_NAME_CACHE_PLUGINS_PATH)
 	wksCachePluginsPath := filepath.Join(filepath.Join(workspace.GetWorkspaceFileFolder(), "cache"), "plugins")
 	registryMap := pkgCRegistries.CreateRegistryMap(cachePluginsPath, wksCachePluginsPath, runtimeCtx.GetGoos(), runtimeCtx.GetGoarch())
 	pluginKeys := []string{}
 	for _, plugin := range wksModel.Workspace.Plugins {
 		registryKey := plugin.Registry
 		if len(registryKey) == 0 {
-			registryKey, _ = runtimeCtx.GetSettings(pkgCCtx.CFG_NAME_PLUGINS_REGISTRY)
+			registryKey, _ = runtimeCtx.GetSettings(CFG_NAME_PLUGINS_REGISTRY)
 		}
 		pluginKeys = append(pluginKeys, pkgCRegistries.GetPackageName(plugin.Name, plugin.Version))
 		err = registryMap.AddDependency(registryKey, plugin.Name, plugin.Version)

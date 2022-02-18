@@ -36,7 +36,7 @@ var cleanCmd = &cobra.Command{
 	Short: "Remove object files and cached files",
 	Long:  `Remove object files and cached files`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCCtx.CORE_BUILDER_WORKSPACE_TYPE, ctxInput)
+		ctx, err := pkgCCore.CreateAndInitalizeWorspaceContext(ctxInput)
 		if err != nil {
 			return err
 		}
@@ -63,7 +63,7 @@ func cleanRunner(ctx pkgCCtx.CoreContexter) error {
 	}
 	pkgCTerminal.PrintActions(tAction)
 	if cleanGlobalCache {
-		cachePluginsPath, _ := runtimeCtx.GetSettings(pkgCCtx.CFG_NAME_CACHE_PATH)
+		cachePluginsPath, _ := runtimeCtx.GetSettings(CFG_NAME_CACHE_PATH)
 		err := os.RemoveAll(cachePluginsPath)
 		if err != nil {
 			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", pkgCTerminal.ConvertToRedColor(cachePluginsPath)))

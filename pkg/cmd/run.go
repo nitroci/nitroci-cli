@@ -38,7 +38,7 @@ var runCmd = &cobra.Command{
 	Short: "Run workspace commands",
 	Long:  `Run workspace commands`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCCtx.CORE_BUILDER_WORKSPACE_TYPE, ctxInput)
+		ctx, err := pkgCCore.CreateAndInitalizeWorspaceContext(ctxInput)
 		if err != nil {
 			return err
 		}

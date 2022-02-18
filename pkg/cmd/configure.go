@@ -34,7 +34,7 @@ var configureCmd = &cobra.Command{
 	Short: "Show or modify configurations",
 	Long:  `Show or modify configurations`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCCtx.CORE_BUILDER_WORKSPACELESS_TYPE, ctxInput)
+		ctx, err := pkgCCore.CreateAndInitalizeWorspacelessContext(ctxInput)
 		if err != nil {
 			return err
 		}
@@ -47,7 +47,7 @@ func configurationRunner(ctx pkgCCtx.CoreContexter) error {
 		return nil
 	}
 	runtimeCtx := ctx.GetRuntimeCtx()
-	globalConfig, _ := runtimeCtx.GetSettings(pkgCCtx.CFG_NAME_CONFIG_PATH)
+	globalConfig, _ := runtimeCtx.GetSettings(CFG_NAME_CONFIG_PATH)
 	if configureRaw {
 		if len(globalConfig) > 0 {
 			pkgCTerminal.Println(globalConfig)

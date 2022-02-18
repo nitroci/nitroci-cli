@@ -35,7 +35,7 @@ var workspacesCmd = &cobra.Command{
 	Short: "List and interact with configured workspaces",
 	Long:  `List and interact with configured workspaces`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeContext(pkgCCtx.CORE_BUILDER_WORKSPACE_TYPE, ctxInput)
+		ctx, err := pkgCCore.CreateAndInitalizeWorspaceContext(ctxInput)
 		if err != nil {
 			return err
 		}
