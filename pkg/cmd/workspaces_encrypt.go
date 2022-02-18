@@ -26,7 +26,7 @@ var encryptWorkspaceCmd = &cobra.Command{
 	Short: "Encrypt workspace files",
 	Long:  `Encrypt workspace files`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeWorspaceContext(ctxInput)
+		ctx, err := pkgCCore.CreateWorspaceContext(ctxInput)
 		if err != nil {
 			return err
 		}

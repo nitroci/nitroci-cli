@@ -34,7 +34,7 @@ var configureCmd = &cobra.Command{
 	Short: "Show or modify configurations",
 	Long:  `Show or modify configurations`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeWorspacelessContext(ctxInput)
+		ctx, err := pkgCCore.CreateWorspacelessContext(ctxInput)
 		if err != nil {
 			return err
 		}

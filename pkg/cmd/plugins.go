@@ -35,7 +35,7 @@ var pluginsCmd = &cobra.Command{
 	Short: "Plugins managament",
 	Long:  `Plugins management`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeWorspaceContext(ctxInput)
+		ctx, err := pkgCCore.CreateWorspaceContext(ctxInput)
 		if err != nil {
 			return err
 		}

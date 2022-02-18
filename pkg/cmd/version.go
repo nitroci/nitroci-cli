@@ -30,7 +30,7 @@ var versionCmd = &cobra.Command{
 	Short: "Cli version",
 	Long:  `Cli version`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeWorspacelessContext(ctxInput)
+		ctx, err := pkgCCore.CreateWorspacelessContext(ctxInput)
 		if err != nil {
 			return err
 		}

@@ -36,7 +36,7 @@ var cleanCmd = &cobra.Command{
 	Short: "Remove object files and cached files",
 	Long:  `Remove object files and cached files`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeWorspaceContext(ctxInput)
+		ctx, err := pkgCCore.CreateWorspaceContext(ctxInput)
 		if err != nil {
 			return err
 		}

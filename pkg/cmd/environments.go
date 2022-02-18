@@ -27,7 +27,7 @@ var environmentsPipelinesCmd = &cobra.Command{
 	Short: "Print workspace environments information",
 	Long:  `Print workspace environments information`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, err := pkgCCore.CreateAndInitalizeWorspaceContext(ctxInput)
+		ctx, err := pkgCCore.CreateWorspaceContext(ctxInput)
 		if err != nil {
 			return err
 		}
