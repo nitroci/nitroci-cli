@@ -42,6 +42,7 @@ var installWorkspaceCmd = &cobra.Command{
 
 func pluginsInstallRunner(ctx pkgCCtx.CoreContexter) error {
 	runtimeCtx := ctx.GetRuntimeCtx()
+	terminal := ctx.GetTerminal()
 	workspace, err := runtimeCtx.GetCurrentWorkspace()
 	if err != nil {
 		return err
@@ -50,22 +51,22 @@ func pluginsInstallRunner(ctx pkgCCtx.CoreContexter) error {
 	if err != nil {
 		return err
 	}
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.GetWorkspacePath()))
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", terminal.ConvertToCyanColor(workspace.GetWorkspacePath()))
 	if len(wksModel.Workspace.Plugins) == 0 {
-		pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
+		terminal.Print(&pkgCTerminal.TerminalOutput{
 			Messages:    []string{"Workspace doesn't require any plugin", currentWorkspaceTxt},
 			ItemsOutput: []pkgCTerminal.TerminalItemsOutput{},
 		})
 		return nil
 	}
-	cachePluginsPath, _ := runtimeCtx.GetSettings(CFG_NAME_CACHE_PLUGINS_PATH)
+	cachePluginsPath, _ := runtimeCtx.GetSettings("NITROCI_CACHE_PLUGINS")
 	wksCachePluginsPath := filepath.Join(filepath.Join(workspace.GetWorkspaceFileFolder(), "cache"), "plugins")
 	registryMap := pkgCRegistries.CreateRegistryMap(cachePluginsPath, wksCachePluginsPath, runtimeCtx.GetGoos(), runtimeCtx.GetGoarch())
 	pluginKeys := []string{}
 	for _, plugin := range wksModel.Workspace.Plugins {
 		registryKey := plugin.Registry
 		if len(registryKey) == 0 {
-			registryKey, _ = runtimeCtx.GetSettings(CFG_NAME_PLUGINS_REGISTRY)
+			registryKey, _ = runtimeCtx.GetSettings("NITROCI_PLUGINS_REGISTRY_URI")
 		}
 		pluginKeys = append(pluginKeys, pkgCRegistries.GetPackageName(plugin.Name, plugin.Version))
 		err = registryMap.AddDependency(registryKey, plugin.Name, plugin.Version)
@@ -79,7 +80,7 @@ func pluginsInstallRunner(ctx pkgCCtx.CoreContexter) error {
 		ItemsType:   pkgCTerminal.Info,
 		Items:       pluginKeys,
 	}
-	pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
+	terminal.Print(&pkgCTerminal.TerminalOutput{
 		Messages:    []string{"Plugins are going to be installed", currentWorkspaceTxt},
 		ItemsOutput: []pkgCTerminal.TerminalItemsOutput{tItems},
 	})
@@ -88,14 +89,14 @@ func pluginsInstallRunner(ctx pkgCCtx.CoreContexter) error {
 		Step:    "Downloading plugins",
 		Outputs: []string{},
 	}
-	pkgCTerminal.PrintActions(tAction)
+	terminal.PrintActions(tAction)
 	printOkFunc := func(text string) {
 		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", text))
-		pkgCTerminal.PrintActions(tAction)
+		terminal.PrintActions(tAction)
 	}
 	printKoFunc := func(text string) {
-		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", pkgCTerminal.ConvertToRedColor(text)))
-		pkgCTerminal.PrintActions(tAction)
+		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", terminal.ConvertToRedColor(text)))
+		terminal.PrintActions(tAction)
 	}
 	return registryMap.Download(printOkFunc, printKoFunc)
 }

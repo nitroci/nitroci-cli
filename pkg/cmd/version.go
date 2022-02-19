@@ -20,7 +20,6 @@ import (
 
 	pkgCCore "github.com/nitroci/nitroci-core/pkg/core"
 	pkgCCtx "github.com/nitroci/nitroci-core/pkg/core/contexts"
-	pkgCTerminal "github.com/nitroci/nitroci-core/pkg/core/terminal"
 
 	"github.com/spf13/cobra"
 )
@@ -40,8 +39,9 @@ var versionCmd = &cobra.Command{
 
 func versionRunner(ctx pkgCCtx.CoreContexter) error {
 	runtimeCtx := ctx.GetRuntimeCtx()
-	pkgCTerminal.Println(fmt.Sprintf("GOOS: %v", runtimeCtx.GetGoos()))
-	pkgCTerminal.Println(fmt.Sprintf("GOARCH: %v", runtimeCtx.GetGoarch()))
+	terminal := ctx.GetTerminal()
+	terminal.Println(fmt.Sprintf("GOOS: %v", runtimeCtx.GetGoos()))
+	terminal.Println(fmt.Sprintf("GOARCH: %v", runtimeCtx.GetGoarch()))
 	return nil
 }
 

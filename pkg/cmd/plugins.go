@@ -48,15 +48,16 @@ func pluginsRunner(ctx pkgCCtx.CoreContexter) error {
 		return nil
 	}
 	runtimeCtx := ctx.GetRuntimeCtx()
+	terminal := ctx.GetTerminal()
 	workspace, err := runtimeCtx.GetCurrentWorkspace()
 	if err != nil {
 		return err
 	}
 	workspaceModel, _ := workspace.CreateWorkspaceInstance()
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.GetWorkspacePath()))
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", terminal.ConvertToCyanColor(workspace.GetWorkspacePath()))
 	if len(workspaceModel.Workspace.Plugins) == 0 {
 		if !pluginsRaw {
-			pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
+			terminal.Print(&pkgCTerminal.TerminalOutput{
 				Messages: []string{"On workspace", currentWorkspaceTxt},
 				Output:   "Workspace doesn't include any plugin.",
 			})
@@ -64,7 +65,7 @@ func pluginsRunner(ctx pkgCCtx.CoreContexter) error {
 	} else {
 		if pluginsRaw {
 			for _, m := range workspaceModel.Workspace.Plugins {
-				pkgCTerminal.Println(pkgCRegistries.GetPackageName(m.Name, m.Version))
+				terminal.Println(pkgCRegistries.GetPackageName(m.Name, m.Version))
 			}
 		} else {
 			commands := make([]string, len(workspaceModel.Commands))
@@ -79,7 +80,7 @@ func pluginsRunner(ctx pkgCCtx.CoreContexter) error {
 				ItemsType: pkgCTerminal.Info,
 				Items:     commands,
 			}
-			pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
+			terminal.Print(&pkgCTerminal.TerminalOutput{
 				Messages:    []string{"On workspace", currentWorkspaceTxt},
 				ItemsOutput: []pkgCTerminal.TerminalItemsOutput{tItems1},
 			})

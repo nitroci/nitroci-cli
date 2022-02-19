@@ -47,15 +47,16 @@ func configurationRunner(ctx pkgCCtx.CoreContexter) error {
 		return nil
 	}
 	runtimeCtx := ctx.GetRuntimeCtx()
-	globalConfig, _ := runtimeCtx.GetSettings(CFG_NAME_CONFIG_PATH)
+	terminal := ctx.GetTerminal()
+	globalConfig, _ := runtimeCtx.GetSettings("NITROCI_CONFIG")
 	if configureRaw {
 		if len(globalConfig) > 0 {
-			pkgCTerminal.Println(globalConfig)
+			terminal.Println(globalConfig)
 		}
 		return nil
 	}
 	if len(globalConfig) == 0 {
-		pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
+		terminal.Print(&pkgCTerminal.TerminalOutput{
 			Messages:    []string{"Global config file is not initialized"},
 			MessageType: pkgCTerminal.Error,
 			Output:      "(use \"nitroci configure <tool> --profile <profile>\" to initialize a specific tool)",
@@ -67,7 +68,7 @@ func configurationRunner(ctx pkgCCtx.CoreContexter) error {
 			ItemsType:   pkgCTerminal.Info,
 		}
 		currentConfigureTxt := fmt.Sprintf("Your curent configure is set to %v", globalConfig)
-		pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
+		terminal.Print(&pkgCTerminal.TerminalOutput{
 			Messages:    []string{"Global configuration has been initialized", currentConfigureTxt},
 			ItemsOutput: []pkgCTerminal.TerminalItemsOutput{tItems},
 		})

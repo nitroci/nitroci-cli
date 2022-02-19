@@ -48,16 +48,17 @@ var runCmd = &cobra.Command{
 
 func runner(ctx pkgCCtx.CoreContexter, args []string) error {
 	runtimeCtx := ctx.GetRuntimeCtx()
+	terminal := ctx.GetTerminal()
 	workspace, err := runtimeCtx.GetCurrentWorkspace()
 	if err != nil {
 		return err
 	}
 	workspaceModel, _ := workspace.CreateWorkspaceInstance()
 	if runShow {
-		currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.GetWorkspacePath()))
+		currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", terminal.ConvertToCyanColor(workspace.GetWorkspacePath()))
 		if len(workspaceModel.Commands) == 0 {
 			if !runRaw {
-				pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
+				terminal.Print(&pkgCTerminal.TerminalOutput{
 					Messages: []string{"On workspace", currentWorkspaceTxt},
 					Output:   "Workspace doesn't implement commands to be executed.",
 				})
@@ -67,7 +68,7 @@ func runner(ctx pkgCCtx.CoreContexter, args []string) error {
 		if len(args) != 1 || len(args[0]) == 0 {
 			if runRaw {
 				for _, m := range workspaceModel.Commands {
-					pkgCTerminal.Println(strings.ToLower(m.Name) + ": " + strings.ToLower(m.Description))
+					terminal.Println(strings.ToLower(m.Name) + ": " + strings.ToLower(m.Description))
 				}
 			} else {
 				commands := make([]string, len(workspaceModel.Commands))
@@ -80,7 +81,7 @@ func runner(ctx pkgCCtx.CoreContexter, args []string) error {
 					ItemsType:   pkgCTerminal.Info,
 					Items:       commands,
 				}
-				pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
+				terminal.Print(&pkgCTerminal.TerminalOutput{
 					Messages:    []string{"On workspace", currentWorkspaceTxt},
 					ItemsOutput: []pkgCTerminal.TerminalItemsOutput{tItems1},
 				})

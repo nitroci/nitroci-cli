@@ -48,12 +48,13 @@ func workspaceRunner(ctx pkgCCtx.CoreContexter) error {
 		return nil
 	}
 	runtimeCtx := ctx.GetRuntimeCtx()
+	terminal := ctx.GetTerminal()
 	if workspaceRaw {
 		workspace, err := runtimeCtx.GetCurrentWorkspace()
 		if err != nil {
 			return err
 		}
-		pkgCTerminal.Println(workspace.GetWorkspacePath())
+		terminal.Println(workspace.GetWorkspacePath())
 		return nil
 	}
 	files := []string{}
@@ -77,8 +78,8 @@ func workspaceRunner(ctx pkgCCtx.CoreContexter) error {
 	if err != nil {
 		return err
 	}
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.GetWorkspacePath()))
-	pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", terminal.ConvertToCyanColor(workspace.GetWorkspacePath()))
+	terminal.Print(&pkgCTerminal.TerminalOutput{
 		Messages:    []string{"Workspace has been initialized", currentWorkspaceTxt},
 		ItemsOutput: []pkgCTerminal.TerminalItemsOutput{tItems},
 	})

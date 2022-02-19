@@ -53,36 +53,37 @@ func cleanRunner(ctx pkgCCtx.CoreContexter) error {
 	if err != nil {
 		return err
 	}
-	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", pkgCTerminal.ConvertToCyanColor(workspace.GetWorkspacePath()))
-	pkgCTerminal.Print(&pkgCTerminal.TerminalOutput{
+	terminal := ctx.GetTerminal()
+	currentWorkspaceTxt := fmt.Sprintf("Your curent workspace is set to %v", terminal.ConvertToCyanColor(workspace.GetWorkspacePath()))
+	terminal.Print(&pkgCTerminal.TerminalOutput{
 		Messages: []string{"Cache is going to be cleaned", currentWorkspaceTxt},
 	})
 	tAction := &pkgCTerminal.TerminalActionOutput{
 		Step:    "Cleaning cache",
 		Outputs: []string{},
 	}
-	pkgCTerminal.PrintActions(tAction)
+	terminal.PrintActions(tAction)
 	if cleanGlobalCache {
-		cachePluginsPath, _ := runtimeCtx.GetSettings(CFG_NAME_CACHE_PATH)
+		cachePluginsPath, _ := runtimeCtx.GetSettings("NITROCI_CACHE")
 		err := os.RemoveAll(cachePluginsPath)
 		if err != nil {
-			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", pkgCTerminal.ConvertToRedColor(cachePluginsPath)))
-			pkgCTerminal.PrintActions(tAction)
+			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", terminal.ConvertToRedColor(cachePluginsPath)))
+			terminal.PrintActions(tAction)
 			return err
 		}
 		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", cachePluginsPath))
-		pkgCTerminal.PrintActions(tAction)
+		terminal.PrintActions(tAction)
 	}
 	if cleanLocalCache {
 		wksCachePluginsPath := filepath.Join(workspace.GetWorkspaceFileFolder(), "cache")
 		err := os.RemoveAll(wksCachePluginsPath)
 		if err != nil {
-			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", pkgCTerminal.ConvertToRedColor(wksCachePluginsPath)))
-			pkgCTerminal.PrintActions(tAction)
+			tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", terminal.ConvertToRedColor(wksCachePluginsPath)))
+			terminal.PrintActions(tAction)
 			return err
 		}
 		tAction.Outputs = append(tAction.Outputs, fmt.Sprintf("• %v", wksCachePluginsPath))
-		pkgCTerminal.PrintActions(tAction)
+		terminal.PrintActions(tAction)
 	}
 	return nil
 }
