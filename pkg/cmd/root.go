@@ -40,7 +40,7 @@ and it is not tied to a particolar language or farmework.`,
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	rootCmd.SilenceErrors = false
-	rootCmd.SilenceUsage = false
+	rootCmd.SilenceUsage = true
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
