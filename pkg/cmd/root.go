@@ -56,7 +56,7 @@ func rootOnInitialize() {
 		WorkingDirectory: path,
 		Profile:          profile,
 		Environment:      "",
-		WorkspaceDepth:   workspace,
+		WorkspaceDepth:   workspace - 1,
 		Verbose:          verbose,
 	}
 }
